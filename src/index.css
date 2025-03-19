@@ -7,6 +7,7 @@
 
 @layer base {
   :root {
+    /* Bamboo & Nature color system */
     --background: 60 36% 96%;
     --foreground: 110 24% 16%;
 
@@ -75,12 +76,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-nature-cream text-foreground font-sans;
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23606C38' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif text-nature-moss;
   }
 }
 
@@ -90,15 +91,15 @@
   }
   
   .btn-craft {
-    @apply px-6 py-2 rounded-md bg-nature-bamboo text-white hover:bg-nature-moss transition-colors duration-300;
+    @apply px-6 py-2 rounded-md bg-nature-bamboo text-white hover:bg-nature-moss transition-colors duration-300 shadow-nature;
   }
   
   .input-craft {
-    @apply border border-nature-sage/60 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-nature-bamboo/50;
+    @apply border border-nature-sage/60 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-nature-bamboo/50 bg-white/80;
   }
   
   .card-craft {
-    @apply bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-nature-linen;
+    @apply bg-white rounded-lg overflow-hidden shadow-nature transition-shadow duration-300 border border-nature-linen;
   }
 
   .nature-shadow {
@@ -113,36 +114,29 @@
     background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23606C38' fill-opacity='0.07'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
+  .bamboo-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657l1.415 1.414L13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zm-24.596 0l-5.485 5.486 1.414 1.414 7.9-7.9h-2.83zm16.485 0l-4.242 4.242L29.8 2.12v-.12h5.374zm-8.323 0l4.242 4.242L29.8 2.12v-.12h2.122z' fill='%23606C38' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+
   .nature-hover {
-    position: relative;
-    overflow: hidden;
+    @apply relative overflow-hidden;
   }
 
   .nature-hover::after {
     content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: theme('colors.nature.moss');
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease;
+    @apply absolute bottom-0 left-0 w-full h-0.5 bg-nature-moss transform scale-x-0 origin-right transition-transform duration-300;
   }
 
   .nature-hover:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    @apply transform scale-x-100 origin-left;
   }
 
   .btn-pressed {
-    transition: all 0.2s ease;
+    @apply transition-all duration-200;
   }
 
   .btn-pressed:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    @apply transform translate-y-0.5 shadow-sm;
   }
 
   .bamboo-spin {
@@ -185,5 +179,40 @@
     50% {
       transform: translateY(-10px);
     }
+  }
+
+  /* Additional bamboo theme components */
+  .bamboo-section {
+    @apply relative overflow-hidden py-12 bg-nature-sunlight/50;
+  }
+
+  .bamboo-section::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-bamboo-pattern opacity-10 z-0;
+  }
+
+  .leaf-decoration {
+    @apply absolute w-8 h-8 text-nature-leaf opacity-20 animate-leaf-sway pointer-events-none;
+  }
+
+  .bamboo-card {
+    @apply relative bg-white/90 rounded-lg p-6 border border-nature-sage/20 shadow-nature overflow-hidden;
+  }
+
+  .bamboo-card::before {
+    content: '';
+    @apply absolute -top-4 -left-4 w-12 h-12 bg-nature-leaf/10 rounded-full z-0;
+  }
+
+  .bamboo-button {
+    @apply bg-nature-bamboo hover:bg-nature-moss text-white font-medium px-6 py-2 rounded-md transition-colors duration-300 shadow-sm hover:shadow-md btn-pressed;
+  }
+
+  .organic-blob {
+    @apply rounded-[60%_40%_30%_70%_/_60%_30%_70%_40%];
+  }
+
+  .organic-border {
+    @apply rounded-[30%_70%_70%_30%_/_30%_30%_70%_70%];
   }
 }
