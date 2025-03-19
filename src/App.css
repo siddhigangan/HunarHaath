@@ -6,23 +6,22 @@
 }
 
 /* Animation keyframes */
-@keyframes pottery-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes leaf-sway {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
 }
 
-/* Custom button styles for pottery theme */
-.pottery-button {
+/* Custom button styles for bamboo theme */
+.nature-button {
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.pottery-button::before {
+.nature-button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -38,6 +37,31 @@
   transition: left 0.5s ease;
 }
 
-.pottery-button:hover::before {
+.nature-button:hover::before {
   left: 100%;
+}
+
+/* Leaf decorations */
+.leaf-decoration {
+  position: absolute;
+  opacity: 0.1;
+  animation: leaf-sway 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.leaf-decoration:nth-child(odd) {
+  animation-delay: 0.5s;
+}
+
+.leaf-decoration:nth-child(even) {
+  animation-delay: 1s;
+}
+
+/* Organic shapes */
+.organic-border {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+.organic-blob {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
