@@ -9,7 +9,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen clay-texture">
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />

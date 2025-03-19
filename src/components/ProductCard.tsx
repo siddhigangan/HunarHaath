@@ -15,8 +15,8 @@ export interface ProductCardProps {
 
 export function ProductCard({ id, name, price, image, artisan, category }: ProductCardProps) {
   return (
-    <div className="card-craft group animate-fade-up">
-      <div className="relative">
+    <div className="card-craft group animate-fade-up pottery-shadow">
+      <div className="relative overflow-hidden rounded-t-lg">
         <Link to={`/product/${id}`}>
           <AspectRatio ratio={4/3}>
             <img 
@@ -25,30 +25,31 @@ export function ProductCard({ id, name, price, image, artisan, category }: Produ
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </AspectRatio>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </Link>
         <Button 
           variant="ghost" 
           size="icon" 
-          className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full h-8 w-8"
+          className="absolute top-2 right-2 bg-white/80 hover:bg-white rounded-full h-8 w-8 btn-pressed"
         >
           <Heart className="h-4 w-4 text-craft-terracotta" />
         </Button>
       </div>
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <Link to={`/product/${id}`} className="hover:underline">
-            <h3 className="font-medium text-lg line-clamp-1">{name}</h3>
+          <Link to={`/product/${id}`} className="brushstroke-hover">
+            <h3 className="font-serif font-medium text-lg line-clamp-1">{name}</h3>
           </Link>
         </div>
         <div className="flex justify-between items-center">
           <div>
             <p className="text-lg font-semibold text-craft-terracotta">${price.toFixed(2)}</p>
             <p className="text-sm text-muted-foreground mt-1">
-              By <Link to={`/artisan/${artisan.toLowerCase().replace(' ', '-')}`} className="hover:underline text-craft-forest">{artisan}</Link>
+              By <Link to={`/artisan/${artisan.toLowerCase().replace(' ', '-')}`} className="brushstroke-hover text-craft-forest">{artisan}</Link>
             </p>
           </div>
           <Link to={`/category/${category.toLowerCase()}`}>
-            <span className="text-xs px-2 py-1 bg-craft-cream rounded-full text-craft-forest">
+            <span className="text-xs px-2 py-1 bg-craft-cream rounded-full text-craft-forest border border-craft-earth/10">
               {category}
             </span>
           </Link>

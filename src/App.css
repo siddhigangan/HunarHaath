@@ -1,24 +1,12 @@
+
+/* Base styles */
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
+/* Animation keyframes */
+@keyframes pottery-spin {
   from {
     transform: rotate(0deg);
   }
@@ -27,16 +15,29 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Custom button styles for pottery theme */
+.pottery-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.card {
-  padding: 2em;
+.pottery-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: left 0.5s ease;
 }
 
-.read-the-docs {
-  color: #888;
+.pottery-button:hover::before {
+  left: 100%;
 }
