@@ -26,7 +26,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-2xl font-serif font-bold text-craft-terracotta">
-              CraftConnect
+              Hoonarhaath
             </span>
           </Link>
 
