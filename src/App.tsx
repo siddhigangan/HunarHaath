@@ -10,7 +10,9 @@ import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 import PotteryCategory from "./pages/Category/Pottery";
 import JewelryCategory from "./pages/Category/Jewelry";
-import HomeDecorCategory from "./pages/Category/homedecor";
+import HomeDecorCategory from "./pages/Category/HomeDecor";
+import FoodCategory from "./pages/Category/Food";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/category/pottery" element={<PotteryCategory />} />
           <Route path="/category/jewelry" element={<JewelryCategory />} />
           <Route path="/category/home-decor" element={<HomeDecorCategory />} /> 
+          <Route path="/category/food" element={<FoodCategory />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

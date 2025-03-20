@@ -101,12 +101,24 @@ export const products: Product[] = [
     price: 95.0,
     image: "/picke.jpg",
     artisan: "Madhvi Bhide",
-    category: "Gourmet",
+    category: "Food",
     description:
       "Homemade with fresh ingredients, this flavorful pickle is crafted for a perfect balance of taste and tradition.",
     materials: ["Natural Spices", "Fresh Organic Ingredients"],
     inStock: true,
   },
+    {
+      id: "9",
+      name: "Papad",
+      price: 50.00,
+      image: "/papad.jpg",
+      artisan: "Madhvi Bhide",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
 ];
 
 export const trendingProducts = products.slice(0, 4);
