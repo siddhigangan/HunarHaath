@@ -68,7 +68,7 @@ export const products: Product[] = [
   },
   {
     id: "6",
-    name: "Brush Stand",
+    name: "Paint Brush Stand",
     price: 38.00,
     image: "/brush_stand.jpg",
     artisan: "Maya Patel",
