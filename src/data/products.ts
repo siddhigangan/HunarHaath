@@ -99,7 +99,7 @@ export const products: Product[] = [
     id: "8",
     name: "Homemade Pickle",
     price: 95.0,
-    image: "/pickle.jpg",
+    image: "/picke.jpg",
     artisan: "Madhvi Bhide",
     category: "Gourmet",
     description:
