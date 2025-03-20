@@ -16,7 +16,7 @@ export function FeaturedCategories() {
     },
     {
       name: "Jewelry",
-      image: "",
+      image: "/earrings.jpg",
       path: "/category/jewelry"
     },
     {
