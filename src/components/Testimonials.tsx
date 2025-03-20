@@ -1,43 +1,43 @@
-
 export function Testimonials() {
-  const testimonials = [
+  const reasons = [
     {
-      quote: "The quality of the handcrafted jewelry I ordered exceeded my expectations. I love knowing the story behind each piece!",
-      author: "Jessica M.",
-      location: "Portland, OR"
+      quote: "HunarHaath provides a platform where artisans can showcase their craftsmanship to a global audience, helping them gain visibility and recognition.",
+      author: "Increased Reach",
+      location: "Connect with global customers"
     },
     {
-      quote: "CraftConnect has connected me with talented artisans I would have never discovered otherwise. My home is filled with unique pieces now.",
-      author: "Michael T.",
-      location: "Austin, TX"
+      quote: "Through HunarHaath, artisans can sell their products directly without middlemen, ensuring they receive fair compensation for their work.",
+      author: "Fair Trade",
+      location: "Empowering artisans financially"
     },
     {
-      quote: "As an artisan, this platform has helped me reach customers worldwide. The support from the CraftConnect team has been amazing!",
-      author: "Sarah L.",
-      location: "Asheville, NC"
+      quote: "Artisans get access to resources, training, and support from the HunarHaath team, helping them improve their skills and grow sustainably.",
+      author: "Skill Development",
+      location: "Enhancing artisan potential"
     }
   ];
 
   return (
     <section className="py-12 bg-craft-sage/10">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-serif text-center mb-12">What People Are Saying</h2>
+        <h2 className="text-3xl font-serif text-center mb-12">
+          Why Artisans Need HunarHaath?
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {reasons.map((reason, index) => (
             <div 
               key={index} 
               className="bg-white p-6 rounded-lg shadow-md flex flex-col animate-fade-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex-grow">
-                <svg className="h-8 w-8 text-craft-terracotta mb-4" fill="currentColor" viewBox="0 0 32 32">
-                  <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
-                </svg>
-                <p className="italic text-craft-forest mb-6">{testimonial.quote}</p>
+                <p className="text-craft-forest mb-6 text-base leading-relaxed">
+                  {reason.quote}
+                </p>
               </div>
               <div>
-                <p className="font-semibold">{testimonial.author}</p>
-                <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                <p className="font-semibold text-lg">{reason.author}</p>
+                <p className="text-sm text-muted-foreground">{reason.location}</p>
               </div>
             </div>
           ))}
