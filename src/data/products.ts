@@ -15,7 +15,7 @@ export const products: Product[] = [
     id: "1",
     name: "Hand-thrown Ceramic Vase",
     price: 89.99,
-    image: "/Bottle.jpg",
+    image: "/Bottle.jpg", // Chose the stashed change, adjust if needed
     artisan: "Maria Gonzalez",
     category: "Pottery",
     description: "This elegant hand-thrown ceramic vase features a beautiful matte glaze in earthy tones. Each piece is completely unique with subtle variations in color and texture. Perfect as a standalone decorative piece or for displaying fresh flowers.",
@@ -57,10 +57,10 @@ export const products: Product[] = [
   },
   {
     id: "5",
-    name: "Hand-woven Wool Scarf",
+    name: "Bamboo purse",
     price: 65.00,
     image: "/purse-real.jpg",
-    artisan: "Thomas Brown",
+    artisan: "Rajesh Patil",
     category: "Clothing",
     description: "This luxurious hand-woven wool scarf is crafted on a traditional loom using locally sourced, naturally dyed wool. The earthy color palette and subtle pattern make it a versatile accessory for any season.",
     materials: ["Organic Wool", "Natural Dyes"],
