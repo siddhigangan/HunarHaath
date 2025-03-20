@@ -57,10 +57,10 @@ export const products: Product[] = [
   },
   {
     id: "5",
-    name: "Hand-woven Wool Scarf",
+    name: "Bamboo purse",
     price: 65.00,
-    image: "https://images.unsplash.com/photo-1449505937837-e288997464de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    artisan: "Thomas Brown",
+    image: "/purse-real.jpg",
+    artisan: "Rajesh Patil",
     category: "Clothing",
     description: "This luxurious hand-woven wool scarf is crafted on a traditional loom using locally sourced, naturally dyed wool. The earthy color palette and subtle pattern make it a versatile accessory for any season.",
     materials: ["Organic Wool", "Natural Dyes"],

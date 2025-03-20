@@ -20,7 +20,12 @@ export function ProductCard({ id, name, price, image, artisan, category }: Produ
         <Link to={`/product/${id}`}>
           <AspectRatio ratio={4/3}>
             <div className="w-full h-full bg-craft-cream/50 flex items-center justify-center border border-dashed border-craft-forest/30">
-              <p className="text-craft-forest/60 text-sm">Image placeholder</p>
+            
+    <img
+      src={`${image}`}
+      alt={name}
+      className="w-full h-full object-cover rounded-md"
+    />
             </div>
           </AspectRatio>
         </Link>
