@@ -24,13 +24,13 @@ export const products: Product[] = [
   },
   {
     id: "2",
-    name: "Silver Leaf Earrings",
+    name: "Bamboo Leaf Earrings",
     price: 45.00,
-    image: "https://images.unsplash.com/photo-1642909397344-c922c12b6128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
-    artisan: "Elena Parker",
+    image: "/earrings.jpg",
+    artisan: "Savitri Deshpande",
     category: "Jewelry",
-    description: "These delicate silver leaf earrings are hand-forged and feature a brushed finish. The organic leaf shapes catch the light beautifully and move gently with the wearer.",
-    materials: ["Sterling Silver", "Hypoallergenic Hooks"],
+    description: "These delicate bamboo leaf earrings are hand-forged and feature a brushed finish. The organic leaf shapes catch the light beautifully and move gently with the wearer.",
+    materials: ["Bamboo", "Hypoallergenic Hooks"],
     inStock: true
   },
   {
