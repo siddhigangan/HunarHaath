@@ -21,7 +21,7 @@ export function FeaturedCategories() {
     },
     {
       name: "Home Decor",
-      image: "",
+      image: "/purse real.jpg",
       path: "/category/home-decor"
     },
     {

@@ -16,7 +16,8 @@ export const products: Product[] = [
     id: "1",
     name: "Hand-thrown Ceramic Vase",
     price: 89.99,
-    image: "https://images.unsplash.com/photo-1612196808214-b7e239b5f5ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
+    image: "/purse-real.jpg",
+
     artisan: "Maria Gonzalez",
     category: "Pottery",
     description: "This elegant hand-thrown ceramic vase features a beautiful matte glaze in earthy tones. Each piece is completely unique with subtle variations in color and texture. Perfect as a standalone decorative piece or for displaying fresh flowers.",
