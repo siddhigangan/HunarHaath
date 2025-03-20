@@ -1,145 +1,124 @@
+import { Layout } from "@/components/Layout";
+import { ProductCard } from "@/components/ProductCard";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { products } from "@/data/products";
+import { Filter, SlidersHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Layout } from '@/components/Layout';
-import { products } from '@/data/products';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import { Heart, ShoppingCart, MessageSquare } from 'lucide-react';
+export default function HomeDecorCategory() {
+  const [filteredProducts, setFilteredProducts] = useState(
+    products.filter((product) => product.category === "Home Decor")
+  );
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-export default function ProductDetail() {
-  const { id } = useParams<{ id: string }>();
-  const { toast } = useToast();
-  const [quantity, setQuantity] = useState(1);
-  
-  // Find the product with the matching ID
-  const product = products.find((p) => p.id === id);
-  
-  if (!product) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-12">
-          <h1 className="text-2xl font-serif">Product not found</h1>
-        </div>
-      </Layout>
-    );
-  }
-
-  const handleAddToCart = () => {
-    toast({
-      title: "Added to Cart",
-      description: `${product.name} (Qty: ${quantity}) has been added to your cart.`,
-    });
-  };
-
-  const handleAddToWishlist = () => {
-    toast({
-      title: "Added to Wishlist",
-      description: `${product.name} has been added to your wishlist.`,
-    });
-  };
-
-  const handleContactArtisan = () => {
-    toast({
-      title: "Message Sent",
-      description: `Your message to ${product.artisan} has been sent.`,
-    });
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Product Image */}
-          <div className="animate-fade-up">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-auto rounded-lg object-cover"
-            />
-          </div>
-          
-          {/* Product Details */}
-          <div className="animate-fade-up" style={{ animationDelay: '100ms' }}>
-            <div className="mb-6">
-              <h1 className="text-3xl font-serif mb-2">{product.name}</h1>
-              <p className="text-xl font-medium text-craft-terracotta mb-4">${product.price.toFixed(2)}</p>
-              <div className="mb-4">
-                <span className="inline-block px-3 py-1 text-sm rounded-full bg-craft-cream text-craft-forest">
-                  {product.category}
-                </span>
-              </div>
-              <p className="text-muted-foreground mb-6">
-                By <span className="text-craft-forest">{product.artisan}</span>
-              </p>
-              <p className="mb-6">{product.description}</p>
-              
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-sm breadcrumbs mb-6">
+          <ul className="flex items-center space-x-2">
+            <li>
+              <Link to="/" className="text-craft-forest hover:text-craft-terracotta">Home</Link>
+            </li>
+            <li><span className="mx-2">/</span></li>
+            <li><span className="font-medium">Home Decor</span></li>
+          </ul>
+        </div>
+
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-serif text-craft-forest mb-2">Artistic Home Decor</h1>
+          <p className="text-craft-forest/80 max-w-3xl">
+            Elevate your living spaces with our handcrafted home decor collection.
+          </p>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className={`w-full md:w-64 md:block ${isFilterOpen ? "block" : "hidden"}`}>
+            <div className="bg-white p-4 rounded-lg border border-craft-earth/10 shadow-sm">
+              <h2 className="font-medium text-lg mb-4">Filters</h2>
+
               <div className="mb-6">
-                <h3 className="font-medium mb-2">Materials:</h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.materials.map((material) => (
-                    <span
-                      key={material}
-                      className="px-3 py-1 text-sm bg-craft-sage/20 text-craft-forest rounded-full"
-                    >
-                      {material}
-                    </span>
+                <h3 className="font-medium mb-2">Material</h3>
+                <div className="space-y-2">
+                  {["Wood", "Metal", "Glass"].map((material) => (
+                    <div key={material} className="flex items-center">
+                      <input type="checkbox" id={material.toLowerCase()} className="mr-2 h-4 w-4" />
+                      <label htmlFor={material.toLowerCase()}>{material}</label>
+                    </div>
                   ))}
                 </div>
               </div>
-            </div>
-            
-            {/* Quantity Selector */}
-            <div className="flex items-center mb-6">
-              <p className="mr-4 font-medium">Quantity:</p>
-              <div className="flex items-center border border-craft-earth/30 rounded-md">
-                <button
-                  className="px-3 py-1 text-lg"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >
-                  -
-                </button>
-                <span className="px-4 py-1 border-x border-craft-earth/30">
-                  {quantity}
-                </span>
-                <button
-                  className="px-3 py-1 text-lg"
-                  onClick={() => setQuantity(quantity + 1)}
-                >
-                  +
-                </button>
+
+              <Separator className="my-4" />
+
+              <div className="mb-6">
+                <h3 className="font-medium mb-2">Price Range</h3>
+                <div className="space-y-2">
+                  {[
+                    { id: "price1", label: "Under $50" },
+                    { id: "price2", label: "$50 - $100" },
+                    { id: "price3", label: "$100 - $200" },
+                  ].map(({ id, label }) => (
+                    <div key={id} className="flex items-center">
+                      <input type="checkbox" id={id} className="mr-2 h-4 w-4" />
+                      <label htmlFor={id}>{label}</label>
+                    </div>
+                  ))}
+                </div>
               </div>
+
+              <Button className="w-full mt-6 bg-craft-terracotta hover:bg-craft-clay">Apply Filters</Button>
             </div>
-            
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              <Button 
-                className="w-full bg-craft-terracotta hover:bg-craft-clay text-white flex items-center justify-center gap-2"
-                onClick={handleAddToCart}
+          </div>
+
+          <div className="flex-1">
+            <div className="md:hidden mb-4">
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-center gap-2 border-craft-earth/20"
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
               >
-                <ShoppingCart size={18} />
-                Add to Cart
+                <Filter size={16} />
+                <span>{isFilterOpen ? "Hide Filters" : "Show Filters"}</span>
               </Button>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <Button 
-                  variant="outline" 
-                  className="border-craft-forest text-craft-forest flex items-center justify-center gap-2"
-                  onClick={handleAddToWishlist}
+            </div>
+
+            <div className="flex justify-between items-center mb-6">
+              <div className="text-sm text-craft-forest">Showing {filteredProducts.length} items</div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  image={product.image}
+                  artisan={product.artisan}
+                  category={product.category}
+                />
+              ))}
+            </div>
+
+            {filteredProducts.length === 0 && (
+              <div className="text-center py-12">
+                <SlidersHorizontal className="mx-auto h-12 w-12 text-craft-forest/30 mb-4" />
+                <h3 className="text-lg font-medium mb-2">No items match your filters</h3>
+                <p className="text-craft-forest/70 mb-6">Try adjusting your filters or browse other categories</p>
+                <Button
+                  onClick={() => setFilteredProducts(products.filter((product) => product.category === "Home Decor"))}
+                  className="bg-craft-terracotta hover:bg-craft-clay"
                 >
-                  <Heart size={18} />
-                  Save to Wishlist
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="border-craft-forest text-craft-forest flex items-center justify-center gap-2"
-                  onClick={handleContactArtisan}
-                >
-                  <MessageSquare size={18} />
-                  Contact Artisan
+                  Clear Filters
                 </Button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
