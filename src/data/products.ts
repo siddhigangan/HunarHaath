@@ -16,8 +16,7 @@ export const products: Product[] = [
     id: "1",
     name: "Hand-thrown Ceramic Vase",
     price: 89.99,
-    image: "/purse-real.jpg",
-
+    image: "https://images.unsplash.com/photo-1612196808214-b7e239b5f5ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
     artisan: "Maria Gonzalez",
     category: "Pottery",
     description: "This elegant hand-thrown ceramic vase features a beautiful matte glaze in earthy tones. Each piece is completely unique with subtle variations in color and texture. Perfect as a standalone decorative piece or for displaying fresh flowers.",
@@ -59,10 +58,10 @@ export const products: Product[] = [
   },
   {
     id: "5",
-    name: "Hand-woven Wool Scarf",
+    name: "Bamboo Purse",
     price: 65.00,
-    image: "https://images.unsplash.com/photo-1449505937837-e288997464de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    artisan: "Thomas Brown",
+    image: "/purse-real.jpg",
+    artisan: "Rajesh Patil",
     category: "Clothing",
     description: "This luxurious hand-woven wool scarf is crafted on a traditional loom using locally sourced, naturally dyed wool. The earthy color palette and subtle pattern make it a versatile accessory for any season.",
     materials: ["Organic Wool", "Natural Dyes"],
@@ -105,3 +104,4 @@ export const products: Product[] = [
 
 export const trendingProducts = products.slice(0, 4);
 export const newArrivals = [products[4], products[5], products[6], products[7]];
+
