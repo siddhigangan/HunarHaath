@@ -6,11 +6,9 @@ export function HeroBanner() {
   return (
     <div className="relative bg-craft-cream overflow-hidden">
       <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/photo-1554121343-692d11ad957c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-          alt="Handcrafted pottery"
-          className="w-full h-full object-cover opacity-20"
-        />
+        <div className="w-full h-full bg-craft-cream flex items-center justify-center border border-dashed border-craft-forest/30">
+          <p className="text-craft-forest/70">Hero image placeholder</p>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-r from-craft-forest/30 to-craft-terracotta/30" />
       </div>
       
