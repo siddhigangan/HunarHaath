@@ -1,4 +1,3 @@
-
 export interface Product {
   id: string;
   name: string;
@@ -16,12 +15,7 @@ export const products: Product[] = [
     id: "1",
     name: "Hand-thrown Ceramic Vase",
     price: 89.99,
-<<<<<<< Updated upstream
-    image: "/purse-real.jpg",
-
-=======
     image: "/Bottle.jpg",
->>>>>>> Stashed changes
     artisan: "Maria Gonzalez",
     category: "Pottery",
     description: "This elegant hand-thrown ceramic vase features a beautiful matte glaze in earthy tones. Each piece is completely unique with subtle variations in color and texture. Perfect as a standalone decorative piece or for displaying fresh flowers.",
