@@ -48,22 +48,7 @@ export function Footer() {
             </ul>
           </div>
           
-          <div>
-            <h4 className="text-lg font-serif mb-4">Newsletter</h4>
-            <p className="text-craft-cream/80 mb-4">
-              Subscribe to receive updates on new artisans, products, and promotions.
-            </p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="px-4 py-2 w-full text-craft-forest rounded-l-md focus:outline-none"
-              />
-              <button className="bg-craft-terracotta hover:bg-craft-clay px-4 py-2 rounded-r-md transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
+          
         </div>
         
         <div className="border-t border-craft-cream/20 mt-8 pt-8 text-center text-craft-cream/60">
