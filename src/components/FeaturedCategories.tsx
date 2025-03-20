@@ -11,7 +11,7 @@ export function FeaturedCategories() {
   const categories: Category[] = [
     {
       name: "Pottery",
-      image: "",
+      image: "/Bottle.jpg",
       path: "/category/pottery"
     },
     {
