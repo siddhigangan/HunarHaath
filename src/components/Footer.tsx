@@ -8,7 +8,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-serif mb-4">Hoonarhaath</h3>
+            <h3 className="text-xl font-serif mb-4">Hunarhaath</h3>
             <p className="text-craft-cream/80 mb-4">
               Connecting artisans with customers worldwide. Discover unique handcrafted
               products made with love and skill.
