@@ -20,6 +20,7 @@ export default function HomeDecorCategory() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
+        {/* Breadcrumbs */}
         <div className="text-sm breadcrumbs mb-6">
           <ul className="flex items-center space-x-2">
             <li>
@@ -30,6 +31,7 @@ export default function HomeDecorCategory() {
           </ul>
         </div>
 
+        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-serif text-craft-forest mb-2">Artistic Home Decor</h1>
           <p className="text-craft-forest/80 max-w-3xl">
@@ -38,10 +40,12 @@ export default function HomeDecorCategory() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
-          <div className={`w-full md:w-64 md:block ${isFilterOpen ? "block" : "hidden"}`}>
+          {/* Sidebar Filters */}
+          <div className={`w-full md:w-64 md:block ₹{isFilterOpen ? "block" : "hidden"}`}>
             <div className="bg-white p-4 rounded-lg border border-craft-earth/10 shadow-sm">
               <h2 className="font-medium text-lg mb-4">Filters</h2>
 
+              {/* Material Filter */}
               <div className="mb-6">
                 <h3 className="font-medium mb-2">Material</h3>
                 <div className="space-y-2">
@@ -56,14 +60,11 @@ export default function HomeDecorCategory() {
 
               <Separator className="my-4" />
 
+              {/* Price Range Filter */}
               <div className="mb-6">
                 <h3 className="font-medium mb-2">Price Range</h3>
                 <div className="space-y-2">
-                  {[
-                    { id: "price1", label: "Under $50" },
-                    { id: "price2", label: "$50 - $100" },
-                    { id: "price3", label: "$100 - $200" },
-                  ].map(({ id, label }) => (
+                  {[{ id: "price1", label: "Under ₹50" }, { id: "price2", label: "₹50 - ₹100" }, { id: "price3", label: "₹100 - ₹200" }].map(({ id, label }) => (
                     <div key={id} className="flex items-center">
                       <input type="checkbox" id={id} className="mr-2 h-4 w-4" />
                       <label htmlFor={id}>{label}</label>
@@ -76,6 +77,7 @@ export default function HomeDecorCategory() {
             </div>
           </div>
 
+          {/* Products List */}
           <div className="flex-1">
             <div className="md:hidden mb-4">
               <Button
@@ -106,6 +108,7 @@ export default function HomeDecorCategory() {
               ))}
             </div>
 
+            {/* No Items Message */}
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
                 <SlidersHorizontal className="mx-auto h-12 w-12 text-craft-forest/30 mb-4" />
