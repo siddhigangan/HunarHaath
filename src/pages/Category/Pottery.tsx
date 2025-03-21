@@ -73,19 +73,19 @@ export default function PotteryCategory() {
                 <div className="space-y-2">
                   <div className="flex items-center">
                     <input type="checkbox" id="price1" className="mr-2 h-4 w-4" />
-                    <label htmlFor="price1">Under $50</label>
+                    <label htmlFor="price1">Under ₹50</label>
                   </div>
                   <div className="flex items-center">
                     <input type="checkbox" id="price2" className="mr-2 h-4 w-4" />
-                    <label htmlFor="price2">$50 - $100</label>
+                    <label htmlFor="price2">₹50 - ₹100</label>
                   </div>
                   <div className="flex items-center">
                     <input type="checkbox" id="price3" className="mr-2 h-4 w-4" />
-                    <label htmlFor="price3">$100 - $200</label>
+                    <label htmlFor="price3">₹100 - ₹200</label>
                   </div>
                   <div className="flex items-center">
                     <input type="checkbox" id="price4" className="mr-2 h-4 w-4" />
-                    <label htmlFor="price4">$200+</label>
+                    <label htmlFor="price4">₹200+</label>
                   </div>
                 </div>
               </div>

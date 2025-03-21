@@ -62,9 +62,9 @@ export default function FoodCategory() {
                 <h3 className="font-medium mb-2">Price Range</h3>
                 <div className="space-y-2">
                   {[
-                    { id: "price1", label: "Under $50" },
-                    { id: "price2", label: "$50 - $100" },
-                    { id: "price3", label: "$100 - $200" },
+                    { id: "price1", label: "Under ₹50" },
+                    { id: "price2", label: "₹50 - ₹100" },
+                    { id: "price3", label: "₹100 - ₹200" },
                   ].map(({ id, label }) => (
                     <div key={id} className="flex items-center">
                       <input type="checkbox" id={id} className="mr-2 h-4 w-4" />
