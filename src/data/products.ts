@@ -14,9 +14,9 @@ export const products: Product[] = [
   {
     id: "1",
     name: "Hand-thrown Ceramic Vase",
-    price: 89.99,
+    price: 400,
     image: "/Bottle.jpg",
-    artisan: "Maria Gonzalez",
+    artisan: "Shweta Gawande",
     category: "Pottery",
     description:
       "This elegant hand-thrown ceramic vase features a beautiful matte glaze in earthy tones. Each piece is unique, with subtle variations in color and texture. Perfect as a standalone decorative piece or for displaying fresh flowers.",
@@ -26,7 +26,7 @@ export const products: Product[] = [
   {
     id: "2",
     name: "Bamboo Leaf Earrings",
-    price: 45.0,
+    price: 250,
     image: "/earrings.jpg",
     artisan: "Savitri Deshpande",
     category: "Jewelry",
@@ -38,7 +38,7 @@ export const products: Product[] = [
   {
     id: "3",
     name: "Vegetable Basket",
-    price: 320.0,
+    price: 320,
     image: "/vegetablebasket.jpg",
     artisan: "Rekha Pande",
     category: "home-decor", 
@@ -50,7 +50,7 @@ export const products: Product[] = [
   {
     id: "4",
     name: "Wood Basket",
-    price: 78.5,
+    price: 150,
     image: "/woodbasket.jpg",
     artisan: "Kisanlalji Sharma",
     category: "home-decor", 
@@ -62,7 +62,7 @@ export const products: Product[] = [
   {
     id: "5",
     name: "Bamboo Purse",
-    price: 65.0,
+    price: 499,
     image: "/purse-real.jpg",
     artisan: "Rajesh Patil",
     category: "Fashion Accessories",
@@ -74,7 +74,7 @@ export const products: Product[] = [
   {
     id: "6",
     name: "Paint Brush Stand",
-    price: 38.0,
+    price: 125,
     image: "/brush_stand.jpg",
     artisan: "Maya Patel",
     category: "home-decor", 
@@ -86,7 +86,7 @@ export const products: Product[] = [
   {
     id: "7",
     name: "Clay Bottle",
-    price: 175.0,
+    price: 120,
     image: "/clay_bottle.jpg",
     artisan: "Dinesh Rawat",
     category: "Pottery",
@@ -98,7 +98,7 @@ export const products: Product[] = [
   {
     id: "8",
     name: "Homemade Pickle",
-    price: 95.0,
+    price: 160,
     image: "/picke.jpg",
     artisan: "Madhvi Bhide",
     category: "Food",
@@ -110,7 +110,7 @@ export const products: Product[] = [
     {
       id: "9",
       name: "Papad",
-      price: 50.00,
+      price: 50,
       image: "/papad.jpg",
       artisan: "Madhvi Bhide",
       category: "Food",
