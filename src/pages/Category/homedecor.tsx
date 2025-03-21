@@ -63,7 +63,7 @@ export default function HomeDecorCategory() {
                 <div className="space-y-2">
                   {[
                     { id: "price1", label: "Under ₹50" },
-                    { id: "price2", label: "₹50 - $₹00" },
+                    { id: "price2", label: "₹50 - ₹100" },
                     { id: "price3", label: "₹100 - ₹200" },
                   ].map(({ id, label }) => (
                     <div key={id} className="flex items-center">
