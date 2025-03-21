@@ -45,8 +45,8 @@ export function ProductCard({ id, name, price, image, artisan, category }: Produ
         </div>
         <div className="flex justify-between items-center">
           <div>
-            <p className="text-lg font-semibold text-craft-terracotta">${price.toFixed(2)}</p>
-            <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-lg font-semibold text-craft-terracotta">₹{price.toFixed(2)}</p>
+          <p className="text-sm text-muted-foreground mt-1">
               By <Link to={`/artisan/${artisan.toLowerCase().replace(' ', '-')}`} className="hover:underline text-craft-forest">{artisan}</Link>
             </p>
           </div>
