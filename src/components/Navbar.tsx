@@ -13,7 +13,7 @@ export function Navbar() {
   const categories = [
     { name: "Pottery", path: "/category/pottery" },
     { name: "Jewelry", path: "/category/jewelry" },
-    { name: "Paintings", path: "/category/paintings" },
+    { name: "Food", path: "/category/Food" },
     { name: "Home Decor", path: "/category/home-decor" },
     { name: "Clothing", path: "/category/clothing" },
     { name: "Accessories", path: "/category/accessories" },
