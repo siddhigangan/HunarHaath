@@ -1,38 +1,78 @@
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { FaUserCircle } from 'react-icons/fa';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
+  const [invalidLogin, setInvalidLogin] = useState(false);
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate login
+
     setTimeout(() => {
       setIsLoading(false);
-      toast({
-        title: "Login Successful",
-        description: "Welcome back to CraftConnect!",
-      });
+
+      if (email === 'khushigildaamt@gmail.com' && password === 'khushi11') {
+        setIsAuthenticated(true);
+        localStorage.setItem('isAuthenticated', 'true');
+        setInvalidLogin(false);
+        toast({
+          title: 'Login Successful',
+          description: 'Welcome back to CraftConnect!',
+        });
+        navigate('/');
+      } else {
+        setInvalidLogin(true);
+      }
     }, 1500);
   };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('isAuthenticated');
+    navigate('/login');
+  };
+
+  if (isAuthenticated) {
+    return (
+      <Layout>
+        <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center p-4 bg-craft-cream/20">
+          <Card className="w-full max-w-md text-center animate-fade-up">
+            <CardHeader>
+              <FaUserCircle className="text-6xl text-craft-terracotta mx-auto" />
+              <CardTitle className="text-2xl font-serif">Khushi Gilda</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">You are logged in.</p>
+            </CardContent>
+            <CardFooter>
+              <Button onClick={handleLogout} className="w-full bg-craft-terracotta hover:bg-craft-clay">
+                Logout
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center p-4 bg-craft-cream/20">
         <Card className="w-full max-w-md animate-fade-up">
-          <CardHeader className="space-y-1">
+          <CardHeader>
             <CardTitle className="text-2xl font-serif text-center">Welcome back</CardTitle>
             <CardDescription className="text-center">
               Enter your credentials to access your account
@@ -66,6 +106,7 @@ export default function Login() {
                   required
                 />
               </div>
+              {invalidLogin && <p className="text-red-500 text-sm text-center">Invalid details</p>}
               <Button 
                 type="submit" 
                 className="w-full bg-craft-terracotta hover:bg-craft-clay"
@@ -74,20 +115,6 @@ export default function Login() {
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
-            
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-craft-earth/20"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-muted-foreground">Or continue with</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="w-full">Google</Button>
-              <Button variant="outline" className="w-full">Facebook</Button>
-            </div>
           </CardContent>
           <CardFooter className="justify-center">
             <p className="text-sm text-center text-muted-foreground">
