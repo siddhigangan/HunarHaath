@@ -10,8 +10,10 @@ import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 import PotteryCategory from "./pages/Category/Pottery";
 import JewelryCategory from "./pages/Category/Jewelry";
-import HomeDecorCategory from "./pages/Category/HomeDecor";
+import HomeDecorCategory from "./pages/Category/homedecor";
 import FoodCategory from "./pages/Category/Food";
+import ArtisanRegister from "./pages/ArtisanRegister";  // New Artisan Registration Page
+import SellerDashboard from "./pages/SellerDashboard";  // New Seller Dashboard
 
 const queryClient = new QueryClient();
 
@@ -26,10 +28,16 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          
+          {/* Category Routes */}
           <Route path="/category/pottery" element={<PotteryCategory />} />
           <Route path="/category/jewelry" element={<JewelryCategory />} />
           <Route path="/category/home-decor" element={<HomeDecorCategory />} /> 
           <Route path="/category/food" element={<FoodCategory />} />
+
+          {/* Artisan Routes */}
+          <Route path="/artisan-register" element={<ArtisanRegister />} />  {/* New */}
+          <Route path="/seller-dashboard" element={<SellerDashboard />} />  {/* New */}
 
           <Route path="*" element={<NotFound />} />
         </Routes>
