@@ -43,7 +43,7 @@ export function Footer() {
               <li><Link to="/about" className="text-craft-cream/80 hover:text-craft-sand transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Contact Us</Link></li>
               <li><Link to="/faqs" className="text-craft-cream/80 hover:text-craft-sand transition-colors">FAQs</Link></li>
-              <li><Link to="/sell" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Sell on Hoonarhaath</Link></li>
+              <li><Link to="/sell" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Sell on HunarHaath</Link></li>
               <li><Link to="/privacy" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
