@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getProductsByCategory, Product } from "@/data/sellers";
+import { getProductsByCategory, Product } from "@/data/sharedProducts";
 
 export default function HomeDecorCategory() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -31,9 +31,9 @@ export default function HomeDecorCategory() {
         </div>
 
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-serif text-craft-forest mb-2">Artistic Home Decor</h1>
+          <h1 className="text-3xl md:text-4xl font-serif text-craft-forest mb-2">Home Decor</h1>
           <p className="text-craft-forest/80 max-w-3xl">
-            Transform your living spaces with our collection of handcrafted home decor pieces.
+            Transform your living spaces with unique handcrafted home decor pieces.
           </p>
         </div>
 
