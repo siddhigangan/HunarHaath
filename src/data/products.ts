@@ -119,6 +119,102 @@ export const products: Product[] = [
       materials: ["Lentil flour", "Natural spices", "Sun-dried"],
       inStock: true,
     },
+    {
+      id: "10",
+      name: "Papad",
+      price: 50,
+      image: "/papad2.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: "11",
+      name: "Coriander powder",
+      price: 50,
+      image: "/Corianderpowder.jpg",
+      artisan: "MadhviBhide",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: " 12",
+      name: "Murabba",
+      price:100,
+      image: "/lemonachar.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: " 13",
+      name: "Kurdi",
+      price:100,
+      image: "/kurdi1.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: " 14",
+      name: "Mirchi",
+      price:100,
+      image: "/mirchi.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: " 15",
+      name: "Mung Badi",
+      price:100,
+      image: "/mundbadi1.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: " 16",
+      name: "Papad",
+      price:100,
+      image: "/papad3.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
+    {
+      id: " 17",
+      name: "Papad",
+      price:100,
+      image: "/papad4.jpg",
+      artisan: "",
+      category: "Food",
+      description:
+        "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
+      materials: ["Lentil flour", "Natural spices", "Sun-dried"],
+      inStock: true,
+    },
 ];
 
 export const trendingProducts = products.slice(0, 4);
