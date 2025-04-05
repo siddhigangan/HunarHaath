@@ -1,5 +1,8 @@
-import { Product } from "@/data/sellers";
+import { Product as SellerProduct } from "@/data/sellers";
+import { Product as StaticProduct } from "@/data/products";
 import { Link } from "react-router-dom";
+
+type Product = SellerProduct | StaticProduct;
 
 interface ProductGridProps {
   products: Product[];
@@ -23,9 +26,9 @@ export function ProductGrid({ products }: ProductGridProps) {
           className="group bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"
         >
           <div className="aspect-square overflow-hidden">
-            {product.images[0] ? (
+            {('images' in product ? product.images[0] : product.image) ? (
               <img
-                src={product.images[0]}
+                src={'images' in product ? product.images[0] : product.image}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
