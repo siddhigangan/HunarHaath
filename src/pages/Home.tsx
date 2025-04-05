@@ -1,11 +1,12 @@
 import { Layout } from "@/components/Layout";
 import { ProductGrid } from "@/components/ProductGrid";
-import { staticProducts, getNewArrivals, getTrendingProducts } from "@/data/staticProducts";
+import { getAllProducts, getNewArrivals, getTrendingProducts } from "@/data/sharedProducts";
 
 export default function Home() {
+  const allProducts = getAllProducts();
   const newArrivals = getNewArrivals();
-  const trendingProducts = getTrendingProducts();
-
+  const trending = getTrendingProducts();
+  
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -32,13 +33,13 @@ export default function Home() {
         {/* Trending Products */}
         <section className="mb-12">
           <h2 className="text-2xl font-serif text-craft-forest mb-6">Trending Products</h2>
-          <ProductGrid products={trendingProducts} />
+          <ProductGrid products={trending} />
         </section>
 
         {/* All Products */}
         <section className="mb-12">
           <h2 className="text-2xl font-serif text-craft-forest mb-6">All Products</h2>
-          <ProductGrid products={staticProducts} />
+          <ProductGrid products={allProducts} />
         </section>
       </div>
     </Layout>
