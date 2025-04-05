@@ -15,6 +15,8 @@ import FoodCategory from "./pages/Category/Food";
 import ArtisanRegister from "./pages/ArtisanRegister";  // New Artisan Registration Page
 import SellerDashboard from "./pages/SellerDashboard";  // New Seller Dashboard
 import { AboutUs } from "@/components/AboutUs";
+import SellerLogin from "@/pages/SellerLogin";
+import ProductDetails from "@/pages/ProductDetails";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +30,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/about" element={<AboutUs />} />
           
           {/* Category Routes */}
@@ -40,6 +42,7 @@ const App = () => (
           {/* Artisan Routes */}
           <Route path="/artisan-register" element={<ArtisanRegister />} />  {/* New */}
           <Route path="/seller-dashboard" element={<SellerDashboard />} />  {/* New */}
+          <Route path="/seller/login" element={<SellerLogin />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

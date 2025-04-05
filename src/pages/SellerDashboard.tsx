@@ -1,66 +1,77 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { getSellerById, addProductToSeller, Product } from "@/data/sellers";
+import { useState, useEffect } from "react";
+import { Layout } from "@/components/Layout";
+import { Product } from "@/data/sellers";
+import { getAllProducts, addProduct, deleteProduct } from "@/data/sharedProducts";
 
 export default function SellerDashboard() {
-  const [seller, setSeller] = useState<any>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [newProduct, setNewProduct] = useState({
     name: "",
     description: "",
     price: "",
     category: "",
     materials: "",
-    images: [] as File[],
+    artisan: "",
+    images: [] as string[]
   });
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
-    const sellerId = localStorage.getItem('currentSellerId');
-    if (!sellerId) {
-      navigate('/login');
-      return;
+    loadProducts();
+  }, []);
+
+  const loadProducts = () => {
+    try {
+      const allProducts = getAllProducts();
+      // Filter only seller-added products (those with sellerId not "static")
+      const sellerProducts = allProducts.filter(product => product.sellerId !== "static");
+      setProducts(sellerProducts);
+    } catch (err) {
+      setError("Error loading products");
+    } finally {
+      setLoading(false);
     }
-
-    const sellerData = getSellerById(sellerId);
-    if (!sellerData) {
-      navigate('/login');
-      return;
-    }
-
-    setSeller(sellerData);
-  }, [navigate]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setNewProduct(prev => ({ ...prev, images: files }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+        setNewProduct(prev => ({
+          ...prev,
+          images: [reader.result as string]
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    
+    if (!selectedImage) {
+      setError("Please select an image");
+      return;
+    }
 
     try {
-      // Convert images to base64
-      const imageUrls = await Promise.all(
-        newProduct.images.map(file => {
-          return new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.readAsDataURL(file);
-          });
-        })
-      );
-
       const productData = {
         ...newProduct,
         price: parseFloat(newProduct.price),
-        images: imageUrls,
-        artisan: seller.name,
+        materials: newProduct.materials.split(",").map(m => m.trim()),
+        sellerId: "seller_" + Date.now(), // Generate a unique seller ID
+        category: newProduct.category,
+        artisan: newProduct.artisan
       };
 
-      addProductToSeller(seller.id, productData);
+      addProduct(productData);
+      loadProducts(); // Reload products after adding
       
       // Reset form
       setNewProduct({
@@ -69,175 +80,208 @@ export default function SellerDashboard() {
         price: "",
         category: "",
         materials: "",
-        images: [],
+        artisan: "",
+        images: []
       });
-
-      // Refresh seller data
-      const updatedSeller = getSellerById(seller.id);
-      if (updatedSeller) {
-        setSeller(updatedSeller);
-      }
+      setSelectedImage(null);
+      setImagePreview(null);
+      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to add product");
+      setError("Error adding product");
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('currentSellerId');
-    navigate('/');
+  const handleDelete = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        deleteProduct(id);
+        loadProducts(); // Reload products after deleting
+      } catch (err) {
+        setError("Error deleting product");
+      }
+    }
   };
 
-  if (!seller) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-craft-forest"></div>
+          </div>
+        </div>
+      </Layout>
+    );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-serif mb-8">Seller Dashboard</h1>
-        
-        {/* Seller Info */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            {seller.photo && (
-              <img
-                src={seller.photo}
-                alt={seller.name}
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            )}
-            <div>
-              <h2 className="text-xl font-medium">{seller.name}</h2>
-              <p className="text-gray-600">{seller.email}</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h3 className="font-medium mb-1">Contact</h3>
-              <p className="text-gray-600">{seller.contact}</p>
-            </div>
-            <div>
-              <h3 className="font-medium mb-1">Shop Address</h3>
-              <p className="text-gray-600">{seller.shopAddress}</p>
-            </div>
-          </div>
+    <Layout>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-serif text-craft-forest">Seller Dashboard</h1>
+          <button
+            onClick={() => window.location.href = "/"}
+            className="bg-craft-forest text-white px-4 py-2 rounded hover:bg-craft-forest/90"
+          >
+            Logout
+          </button>
         </div>
 
-        {/* Add New Product Form */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-medium mb-4">Add New Product</h2>
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
-              {error}
-            </div>
-          )}
+        {error && (
+          <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6">
+            {error}
+          </div>
+        )}
+
+        {/* Add Product Form */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8">
+          <h2 className="text-xl font-serif text-craft-forest mb-4">Add New Product</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Product Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Product Name
+              </label>
               <input
                 type="text"
                 value={newProduct.name}
                 onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full p-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
                 required
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
               <textarea
                 value={newProduct.description}
                 onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full p-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
                 rows={3}
                 required
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium mb-1">Price (₹)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Price (₹)
+              </label>
               <input
                 type="number"
                 value={newProduct.price}
                 onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
-                className="w-full p-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
                 required
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium mb-1">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Category
+              </label>
               <select
                 value={newProduct.category}
                 onChange={(e) => setNewProduct(prev => ({ ...prev, category: e.target.value }))}
-                className="w-full p-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
                 required
               >
                 <option value="">Select a category</option>
-                {seller.categories.map((category: string) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
+                <option value="Pottery">Pottery</option>
+                <option value="Jewelry">Jewelry</option>
+                <option value="Food">Food</option>
+                <option value="Home Decor">Home Decor</option>
               </select>
             </div>
+
             <div>
-              <label className="block text-sm font-medium mb-1">Materials Used</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Materials (comma-separated)
+              </label>
               <input
                 type="text"
                 value={newProduct.materials}
                 onChange={(e) => setNewProduct(prev => ({ ...prev, materials: e.target.value }))}
-                className="w-full p-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
+                placeholder="e.g., Cotton, Wood, Metal"
                 required
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium mb-1">Product Images</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Artisan Name
+              </label>
+              <input
+                type="text"
+                value={newProduct.artisan}
+                onChange={(e) => setNewProduct(prev => ({ ...prev, artisan: e.target.value }))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Product Image
+              </label>
               <input
                 type="file"
-                multiple
                 accept="image/*"
                 onChange={handleImageChange}
-                className="w-full p-2 border rounded"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-craft-forest"
                 required
               />
+              {imagePreview && (
+                <div className="mt-2">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover rounded"
+                  />
+                </div>
+              )}
             </div>
-            <Button type="submit" className="w-full bg-craft-terracotta hover:bg-craft-clay">
-              Add Product
-            </Button>
-          </form>
-          
-          {/* Logout Button */}
-          <div className="mt-6 pt-6 border-t">
-            <Button 
-              onClick={handleLogout}
-              className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700"
+
+            <button
+              type="submit"
+              className="w-full bg-craft-forest text-white py-2 px-4 rounded hover:bg-craft-forest/90"
             >
-              Logout
-            </Button>
-          </div>
+              Add Product
+            </button>
+          </form>
         </div>
 
         {/* Products List */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-medium mb-4">Your Products</h2>
+        <div>
+          <h2 className="text-xl font-serif text-craft-forest mb-4">Your Products</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {seller.products.map((product: Product) => (
-              <div key={product.id} className="border rounded-lg overflow-hidden">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white p-4 rounded-lg shadow-sm border border-gray-100"
+              >
                 {product.images[0] && (
                   <img
                     src={product.images[0]}
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover rounded mb-4"
                   />
                 )}
-                <div className="p-4">
-                  <h3 className="font-medium mb-1">{product.name}</h3>
-                  <p className="text-gray-600 text-sm mb-2">{product.description}</p>
-                  <p className="text-craft-terracotta font-medium">₹{product.price}</p>
-                </div>
+                <h3 className="font-medium text-craft-forest mb-2">{product.name}</h3>
+                <p className="text-sm text-gray-600 mb-2">{product.category}</p>
+                <p className="text-craft-terracotta font-medium mb-4">₹{product.price}</p>
+                <button
+                  onClick={() => handleDelete(product.id)}
+                  className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

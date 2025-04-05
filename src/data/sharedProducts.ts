@@ -1,69 +1,103 @@
-import { Product } from "./sellers";
+import { Product as SellerProduct } from "./sellers";
+import { Product as StaticProduct, products } from "./products";
 
-export type { Product };
+// Convert static product to seller product format
+const convertStaticProduct = (product: StaticProduct): SellerProduct => ({
+  id: product.id,
+  sellerId: "static",
+  name: product.name,
+  description: product.description,
+  price: product.price,
+  category: product.category,
+  images: [product.image],
+  materials: product.materials,
+  artisan: product.artisan,
+  createdAt: new Date().toISOString(),
+  isTrending: true,
+  isNewArrival: true
+});
 
-export const sharedProducts: Product[] = [
-  {
-    id: "pottery1",
-    sellerId: "default",
-    name: "Handcrafted Terracotta Vase",
-    description: "Beautiful handcrafted terracotta vase with traditional patterns. Perfect for home decoration.",
-    price: 1200,
-    category: "Pottery",
-    images: ["/pottery1.jpg"],
-    materials: "Terracotta clay",
-    artisan: "Traditional Artisan",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "jewelry1",
-    sellerId: "default",
-    name: "Silver Necklace with Stones",
-    description: "Elegant silver necklace adorned with natural stones. Handcrafted with attention to detail.",
-    price: 2500,
-    category: "Jewelry",
-    images: ["/jewelry1.jpg"],
-    materials: "Silver, Natural Stones",
-    artisan: "Traditional Artisan",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "food1",
-    sellerId: "default",
-    name: "Homemade Pickles",
-    description: "Traditional homemade pickles made with fresh ingredients and authentic recipes.",
-    price: 300,
-    category: "Food",
-    images: ["/food1.jpg"],
-    materials: "Fresh Vegetables, Spices",
-    artisan: "Traditional Artisan",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "homedecor1",
-    sellerId: "default",
-    name: "Handwoven Wall Hanging",
-    description: "Beautiful handwoven wall hanging with traditional patterns and natural colors.",
-    price: 1800,
-    category: "Home Decor",
-    images: ["/homedecor1.jpg"],
-    materials: "Natural Fibers, Dyes",
-    artisan: "Traditional Artisan",
-    createdAt: new Date().toISOString()
-  }
-];
-
-// Function to get all products
-export const getAllProducts = (): Product[] => {
-  return sharedProducts;
+// Get all products (both static and seller-added)
+export const getAllProducts = (): SellerProduct[] => {
+  // Get seller products from localStorage
+  const sellerProductsJson = localStorage.getItem("sellerProducts");
+  const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
+  
+  // Convert static products to the correct format and combine with seller products
+  const convertedStaticProducts = products.map(convertStaticProduct);
+  return [...convertedStaticProducts, ...sellerProducts];
 };
 
-// Function to get products by category
-export const getProductsByCategory = (category: string): Product[] => {
-  return sharedProducts.filter(product => product.category === category);
+// Get products by category
+export const getProductsByCategory = (category: string): SellerProduct[] => {
+  return getAllProducts().filter(product => product.category === category);
 };
 
-// Function to get a single product by ID
-export const getProductById = (id: string): Product | undefined => {
-  return sharedProducts.find(product => product.id === id);
+// Get a specific product by ID
+export const getProductById = (id: string): SellerProduct | undefined => {
+  const allProducts = getAllProducts();
+  return allProducts.find(product => product.id === id);
+};
+
+// Get new arrivals (both static and seller-added)
+export const getNewArrivals = (): SellerProduct[] => {
+  const allProducts = getAllProducts();
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  
+  return allProducts.filter(product => 
+    new Date(product.createdAt) >= sevenDaysAgo
+  );
+};
+
+// Get trending products (both static and seller-added)
+export const getTrendingProducts = (): SellerProduct[] => {
+  const allProducts = getAllProducts();
+  return allProducts.filter(product => product.isTrending);
+};
+
+// Function to add a new product (for sellers)
+export const addProduct = (product: Omit<SellerProduct, "id" | "createdAt">): SellerProduct => {
+  const newProduct: SellerProduct = {
+    ...product,
+    id: Date.now().toString(), // Generate a unique ID
+    createdAt: new Date().toISOString(),
+  };
+
+  // Get existing seller products
+  const sellerProductsJson = localStorage.getItem("sellerProducts");
+  const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
+  
+  // Add new product
+  sellerProducts.push(newProduct);
+  
+  // Save back to localStorage
+  localStorage.setItem("sellerProducts", JSON.stringify(sellerProducts));
+
+  return newProduct;
+};
+
+// Function to update a product
+export const updateProduct = (id: string, updatedProduct: Partial<SellerProduct>): SellerProduct | undefined => {
+  const sellerProductsJson = localStorage.getItem("sellerProducts");
+  const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
+  
+  const index = sellerProducts.findIndex((p) => p.id === id);
+  if (index === -1) return undefined;
+
+  sellerProducts[index] = { ...sellerProducts[index], ...updatedProduct };
+  localStorage.setItem("sellerProducts", JSON.stringify(sellerProducts));
+
+  return sellerProducts[index];
+};
+
+// Function to delete a product
+export const deleteProduct = (id: string): boolean => {
+  const sellerProductsJson = localStorage.getItem("sellerProducts");
+  const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
+  
+  const filteredProducts = sellerProducts.filter((p) => p.id !== id);
+  localStorage.setItem("sellerProducts", JSON.stringify(filteredProducts));
+
+  return true;
 }; 

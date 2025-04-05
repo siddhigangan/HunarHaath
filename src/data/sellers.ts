@@ -20,9 +20,11 @@ export interface Product {
   price: number;
   category: string;
   images: string[];
-  materials: string;
+  materials: string[];
   artisan: string;
   createdAt: string;
+  isTrending?: boolean;
+  isNewArrival?: boolean;
 }
 
 // Helper function to generate unique IDs
