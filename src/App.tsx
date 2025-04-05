@@ -15,8 +15,6 @@ import FoodCategory from "./pages/Category/Food";
 import ArtisanRegister from "./pages/ArtisanRegister";  // New Artisan Registration Page
 import SellerDashboard from "./pages/SellerDashboard";  // New Seller Dashboard
 import { AboutUs } from "@/components/AboutUs";
-import SellerLogin from "@/pages/SellerLogin";
-import ProductDetails from "@/pages/ProductDetails";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +30,8 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/faqs" element={<Faqs />} />
+          <Route path="/contact" element={<ContactUs />} />
           
           {/* Category Routes */}
           <Route path="/category/pottery" element={<PotteryCategory />} />

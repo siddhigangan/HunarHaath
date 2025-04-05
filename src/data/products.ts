@@ -27,7 +27,7 @@ export const products: Product[] = [
     id: "2",
     name: "Bamboo Leaf Earrings",
     price: 250,
-    image: "/earrings.jpg",
+    image: "/cloth1.jpg",
     artisan: "Savitri Deshpande",
     category: "Jewelry",
     description:

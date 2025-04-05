@@ -8,7 +8,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-serif mb-4">Hunarhaath</h3>
+            <h3 className="text-xl font-serif mb-4">HunarHaath</h3>
             <p className="text-craft-cream/80 mb-4">
               Connecting artisans with customers worldwide. Discover unique handcrafted
               products made with love and skill.
@@ -43,8 +43,7 @@ export function Footer() {
               <li><Link to="/about" className="text-craft-cream/80 hover:text-craft-sand transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Contact Us</Link></li>
               <li><Link to="/faqs" className="text-craft-cream/80 hover:text-craft-sand transition-colors">FAQs</Link></li>
-              <li><Link to="/sell" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Sell on HunarHaath</Link></li>
-              <li><Link to="/privacy" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Privacy Policy</Link></li>
+              
             </ul>
           </div>
           
@@ -52,7 +51,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-craft-cream/20 mt-8 pt-8 text-center text-craft-cream/60">
-          <p>&copy; {new Date().getFullYear()} Hoonarhaath. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} HunarHaath. All rights reserved.</p>
         </div>
       </div>
     </footer>
