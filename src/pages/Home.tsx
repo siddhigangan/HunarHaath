@@ -1,11 +1,10 @@
 import { Layout } from "@/components/Layout";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getAllProducts, getNewArrivals, getTrendingProducts } from "@/data/sharedProducts";
+import { products, trendingProducts, newArrivals } from "@/data/products";
+import { getAllProducts } from "@/data/sharedProducts";
 
 export default function Home() {
   const allProducts = getAllProducts();
-  const newArrivals = getNewArrivals();
-  const trending = getTrendingProducts();
   
   return (
     <Layout>
@@ -23,17 +22,13 @@ export default function Home() {
         {/* New Arrivals */}
         <section className="mb-12">
           <h2 className="text-2xl font-serif text-craft-forest mb-6">New Arrivals</h2>
-          {newArrivals.length > 0 ? (
-            <ProductGrid products={newArrivals} />
-          ) : (
-            <p className="text-center text-gray-600">No new products added recently.</p>
-          )}
+          <ProductGrid products={newArrivals} />
         </section>
 
         {/* Trending Products */}
         <section className="mb-12">
           <h2 className="text-2xl font-serif text-craft-forest mb-6">Trending Products</h2>
-          <ProductGrid products={trending} />
+          <ProductGrid products={trendingProducts} />
         </section>
 
         {/* All Products */}
