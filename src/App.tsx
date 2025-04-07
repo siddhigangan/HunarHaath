@@ -21,6 +21,7 @@ import ContactUs from "./pages/ContactUs";
 import Faqs from "./pages/Faqs";
 import ClothingCategory from "@/pages/Category/Clothing";
 import AccessoriesCategory from "@/pages/Category/Accessories";
+import SellerProfile from "@/pages/SellerProfile";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,8 @@ export function App() {
                 <Route path="login" element={<Login />} />
                 <Route path="seller-login" element={<SellerLogin />} />
                 <Route path="seller-dashboard" element={<SellerDashboard />} />
+                <Route path="artisan-register" element={<ArtisanRegister />} />
+                <Route path="seller/:id" element={<SellerProfile />} />
                 <Route path="category/pottery" element={<PotteryCategory />} />
                 <Route path="category/jewelry" element={<JewelryCategory />} />
                 <Route path="category/food" element={<FoodCategory />} />
@@ -57,7 +60,6 @@ export function App() {
                 <Route path="about" element={<AboutUs />} />
                 <Route path="contact" element={<ContactUs />} />
                 <Route path="faqs" element={<Faqs />} />
-                <Route path="artisan-register" element={<ArtisanRegister />} />
               </Route>
             </Routes>
           </Router>
