@@ -12,13 +12,16 @@ export default function SellerDashboard() {
     name: "",
     description: "",
     price: "",
-    category: "",
+    category: [] as string[], // Updated to array for multiple categories
     materials: "",
     artisan: "",
-    images: [] as string[]
+    images: [] as string[],
+    mobile: "",
   });
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const categoryOptions = ["Pottery", "Clothing", "Accessories", "Food", "Jewellery", "Home Decor"];
 
   useEffect(() => {
     loadProducts();
@@ -27,14 +30,22 @@ export default function SellerDashboard() {
   const loadProducts = () => {
     try {
       const allProducts = getAllProducts();
-      // Filter only seller-added products (those with sellerId not "static")
-      const sellerProducts = allProducts.filter(product => product.sellerId !== "static");
+      const sellerProducts = allProducts.filter((product) => product.sellerId !== "static");
       setProducts(sellerProducts);
     } catch (err) {
       setError("Error loading products");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      category: prev.category.includes(category)
+        ? prev.category.filter((c) => c !== category) // Remove if already selected
+        : [...prev.category, category], // Add if not selected
+    }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +55,9 @@ export default function SellerDashboard() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
-        setNewProduct(prev => ({
+        setNewProduct((prev) => ({
           ...prev,
-          images: [reader.result as string]
+          images: [reader.result as string],
         }));
       };
       reader.readAsDataURL(file);
@@ -55,9 +66,19 @@ export default function SellerDashboard() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!selectedImage) {
       setError("Please select an image");
+      return;
+    }
+
+    if (!newProduct.mobile.match(/^\d{10}$/)) {
+      setError("Enter a valid 10-digit mobile number");
+      return;
+    }
+
+    if (newProduct.category.length === 0) {
+      setError("Please select at least one category");
       return;
     }
 
@@ -65,24 +86,23 @@ export default function SellerDashboard() {
       const productData = {
         ...newProduct,
         price: parseFloat(newProduct.price),
-        materials: newProduct.materials.split(",").map(m => m.trim()),
-        sellerId: "seller_" + Date.now(), // Generate a unique seller ID
-        category: newProduct.category,
-        artisan: newProduct.artisan
+        materials: newProduct.materials.split(",").map((m) => m.trim()),
+        sellerId: "seller_" + Date.now(),
+        mobile: newProduct.mobile,
       };
 
       addProduct(productData);
-      loadProducts(); // Reload products after adding
-      
-      // Reset form
+      loadProducts();
+
       setNewProduct({
         name: "",
         description: "",
         price: "",
-        category: "",
+        category: [],
         materials: "",
         artisan: "",
-        images: []
+        images: [],
+        mobile: "",
       });
       setSelectedImage(null);
       setImagePreview(null);
@@ -96,7 +116,7 @@ export default function SellerDashboard() {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         deleteProduct(id);
-        loadProducts(); // Reload products after deleting
+        loadProducts();
       } catch (err) {
         setError("Error deleting product");
       }
@@ -127,9 +147,7 @@ export default function SellerDashboard() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Product Name
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
               <input
                 type="text"
                 value={newProduct.name}
@@ -139,9 +157,7 @@ export default function SellerDashboard() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Price
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
               <input
                 type="number"
                 value={newProduct.price}
@@ -153,9 +169,7 @@ export default function SellerDashboard() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea
               value={newProduct.description}
               onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
@@ -165,57 +179,37 @@ export default function SellerDashboard() {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Category
-              </label>
-              <select
-                value={newProduct.category}
-                onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
-                required
-              >
-                <option value="">Select a category</option>
-                <option value="Pottery">Pottery</option>
-                <option value="Jewelry">Jewelry</option>
-                <option value="Food">Food</option>
-                <option value="Home Decor">Home Decor</option>
-                <option value="Clothing">Clothing</option>
-                <option value="Accessories">Accessories</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Materials (comma separated)
-              </label>
-              <input
-                type="text"
-                value={newProduct.materials}
-                onChange={(e) => setNewProduct({ ...newProduct, materials: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
-                required
-              />
+          {/* Category Selection (Checkboxes) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <div className="flex flex-wrap gap-4">
+              {categoryOptions.map((category) => (
+                <label key={category} className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={newProduct.category.includes(category)}
+                    onChange={() => handleCategoryChange(category)}
+                    className="mr-2"
+                  />
+                  {category}
+                </label>
+              ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Artisan Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
             <input
               type="text"
-              value={newProduct.artisan}
-              onChange={(e) => setNewProduct({ ...newProduct, artisan: e.target.value })}
+              value={newProduct.mobile}
+              onChange={(e) => setNewProduct({ ...newProduct, mobile: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Product Image
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
             <input
               type="file"
               accept="image/*"
@@ -223,63 +217,15 @@ export default function SellerDashboard() {
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
               required
             />
-            {imagePreview && (
-              <div className="mt-2">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="h-32 w-32 object-cover rounded"
-                />
-              </div>
-            )}
+            {imagePreview && <img src={imagePreview} alt="Preview" className="h-32 w-32 object-cover rounded mt-2" />}
           </div>
 
-          {error && (
-            <div className="text-red-500 text-sm">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm">{error}</div>}
 
-          <button
-            type="submit"
-            className="w-full bg-craft-terracotta text-white py-2 px-4 rounded hover:bg-craft-clay"
-          >
+          <button type="submit" className="w-full bg-craft-terracotta text-white py-2 px-4 rounded hover:bg-craft-clay">
             Add Product
           </button>
         </form>
-      </div>
-
-      {/* Products List */}
-      <div>
-        <h2 className="text-xl font-serif text-craft-forest mb-4">Your Products</h2>
-        {loading ? (
-          <div className="text-center py-8">Loading...</div>
-        ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="w-full h-48 object-cover rounded mb-4"
-                />
-                <h3 className="text-lg font-medium text-craft-forest mb-2">
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 mb-2">₹{product.price}</p>
-                <p className="text-sm text-gray-500 mb-4">{product.description}</p>
-                <button
-                  onClick={() => handleDelete(product.id)}
-                  className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            No products added yet.
-          </div>
-        )}
       </div>
     </div>
   );
