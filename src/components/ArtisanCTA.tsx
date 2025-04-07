@@ -27,15 +27,15 @@ export function ArtisanCTA() {
             creations with customers worldwide. Grow your business, tell your 
             story, and connect with people who appreciate your craft.
           </p>
-          {/* Updated Link to /artisan-register */}
-          <Button 
-            asChild 
-            size="lg" 
-            className="bg-craft-terracotta hover:bg-craft-clay text-white animate-fade-up" 
-            style={{ animationDelay: "200ms" }}
-          >
-            <Link to="/artisan-register">Start Selling Today</Link>
-          </Button>
+          <Link to="/artisan-register">
+            <Button 
+              size="lg" 
+              className="bg-craft-terracotta hover:bg-craft-clay text-white animate-fade-up" 
+              style={{ animationDelay: "200ms" }}
+            >
+              Start Selling Today
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
