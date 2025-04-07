@@ -12,18 +12,18 @@ export default function SellerDashboard() {
     name: "",
     description: "",
     price: "",
-    category: [] as string[], // Updated to array for multiple categories
+    category: [] as string[],
     materials: "",
     artisan: "",
     images: [] as string[],
     mobile: "",
+    sellerName: "",
   });
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const categoryOptions = ["Pottery", "Clothing", "Accessories", "Food", "Jewellery", "Home Decor"];
 
-  // Check authentication on component mount
   useEffect(() => {
     const sellerId = localStorage.getItem("sellerId");
     const isSeller = localStorage.getItem("isSeller");
@@ -52,8 +52,8 @@ export default function SellerDashboard() {
     setNewProduct((prev) => ({
       ...prev,
       category: prev.category.includes(category)
-        ? prev.category.filter((c) => c !== category) // Remove if already selected
-        : [...prev.category, category], // Add if not selected
+        ? prev.category.filter((c) => c !== category)
+        : [...prev.category, category],
     }));
   };
 
@@ -86,7 +86,8 @@ export default function SellerDashboard() {
       return;
     }
 
-    if (newProduct.category.length === 0) {
+    let finalCategories = [...new Set([...newProduct.category, "Accessories"])]
+    if (finalCategories.length === 0) {
       setError("Please select at least one category");
       return;
     }
@@ -97,9 +98,14 @@ export default function SellerDashboard() {
         price: parseFloat(newProduct.price),
         materials: newProduct.materials.split(",").map((m) => m.trim()),
         sellerId: "seller_" + Date.now(),
+        category: finalCategories,
         mobile: newProduct.mobile,
+        isTrending: false,
+        isNewArrival: true,
+        createdAt: new Date().toISOString(),
       };
 
+      console.log("🟢 Adding product:", productData);
       addProduct(productData);
       loadProducts();
 
@@ -112,11 +118,13 @@ export default function SellerDashboard() {
         artisan: "",
         images: [],
         mobile: "",
+        sellerName: "",
       });
       setSelectedImage(null);
       setImagePreview(null);
       setError(null);
     } catch (err) {
+      console.error("Error adding product:", err);
       setError("Error adding product");
     }
   };
@@ -133,14 +141,9 @@ export default function SellerDashboard() {
   };
 
   const handleLogout = () => {
-    // Clear all authentication-related data
     localStorage.removeItem("sellerId");
     localStorage.removeItem("isSeller");
-
-    // Clear any session data
     sessionStorage.clear();
-
-    // Force a hard reload to clear any cached state
     window.location.href = "/";
   };
 
@@ -156,7 +159,6 @@ export default function SellerDashboard() {
         </button>
       </div>
 
-      {/* Add Product Form */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h2 className="text-xl font-serif text-craft-forest mb-4">Add New Product</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -194,7 +196,17 @@ export default function SellerDashboard() {
             />
           </div>
 
-          {/* Category Selection (Checkboxes) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Seller Name</label>
+            <input
+              type="text"
+              value={newProduct.sellerName}
+              onChange={(e) => setNewProduct({ ...newProduct, sellerName: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
+              required
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
             <div className="flex flex-wrap gap-4">
@@ -223,7 +235,28 @@ export default function SellerDashboard() {
             />
           </div>
 
-          <button type="submit" className="w-full bg-craft-terracotta text-white py-2 px-4 rounded hover:bg-craft-clay">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded"
+              required
+            />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mt-2 h-32 rounded border border-gray-200 object-cover"
+              />
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-craft-terracotta text-white py-2 px-4 rounded hover:bg-craft-clay"
+          >
             Add Product
           </button>
         </form>

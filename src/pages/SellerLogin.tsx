@@ -13,7 +13,7 @@ export default function SellerLogin() {
     setError("");
 
     // For demo purposes, check against Sandeep Lad's credentials
-    if (email === "sandeep@example.com" && password === "password123") {
+    if (email === "seller@gmail.com" && password === "password123") {
       // Store seller ID in localStorage
       localStorage.setItem("sellerId", "sandeep-lad-id");
       localStorage.setItem("isSeller", "true");
@@ -74,7 +74,7 @@ export default function SellerLogin() {
 
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>Demo Credentials:</p>
-          <p>Email: sandeep@example.com</p>
+          <p>Email: seller@gmail.com</p>
           <p>Password: password123</p>
         </div>
       </div>
