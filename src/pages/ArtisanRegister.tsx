@@ -75,13 +75,11 @@ export default function ArtisanRegister() {
         photo: photoUrl,
       };
 
-      createSeller(sellerData);
+      const newSeller = createSeller(sellerData);
       
-      // Store seller ID in session for authentication
-      const seller = getSellerByEmail(artisan.email);
-      if (seller) {
-        localStorage.setItem('currentSellerId', seller.id);
-      }
+      // Store seller authentication data
+      localStorage.setItem('sellerId', newSeller.id);
+      localStorage.setItem('isSeller', 'true');
 
       alert("Registration successful! You can now log in as a seller.");
       navigate("/seller-dashboard");

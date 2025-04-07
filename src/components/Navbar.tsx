@@ -1,16 +1,33 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu, X, LogOut } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const isMobile = useIsMobile();
   const { totalItems } = useCart();
+  const navigate = useNavigate();
   
+  useEffect(() => {
+    // Check if user is logged in as seller
+    const sellerId = localStorage.getItem("sellerId");
+    const isSellerLoggedIn = localStorage.getItem("isSeller");
+    setIsSeller(!!(sellerId && isSellerLoggedIn));
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("sellerId");
+    localStorage.removeItem("isSeller");
+    sessionStorage.clear();
+    setIsSeller(false);
+    window.location.href = "/";
+  };
+
   const categories = [
     { name: "Pottery", path: "/category/pottery" },
     { name: "Jewelry", path: "/category/jewelry" },
@@ -64,16 +81,29 @@ export function Navbar() {
                 </span>
               )}
             </Link>
-            <Link to="/login">
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5 text-craft-forest" />
-              </Button>
-            </Link>
-            <Link to="/seller-login">
-              <Button variant="ghost" size="icon" className="text-craft-terracotta">
-                Seller Login
-              </Button>
-            </Link>
+            {isSeller ? (
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="icon" onClick={() => navigate("/seller-dashboard")}>
+                  <User className="h-5 w-5 text-craft-terracotta" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={handleLogout}>
+                  <LogOut className="h-5 w-5 text-craft-terracotta" />
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5 text-craft-forest" />
+                  </Button>
+                </Link>
+                <Link to="/seller-login">
+                  <Button variant="ghost" size="icon" className="text-craft-terracotta">
+                    Seller Login
+                  </Button>
+                </Link>
+              </>
+            )}
             
             {/* Mobile menu button */}
             {isMobile && (
@@ -115,15 +145,40 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/seller-login"
-                  className="block py-2 text-craft-terracotta"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Seller Login
-                </Link>
-              </li>
+              {isSeller ? (
+                <>
+                  <li>
+                    <Link
+                      to="/seller-dashboard"
+                      className="block py-2 text-craft-terracotta"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false);
+                      }}
+                      className="block w-full text-left py-2 text-craft-terracotta"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link
+                    to="/seller-login"
+                    className="block py-2 text-craft-terracotta"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Seller Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </nav>
