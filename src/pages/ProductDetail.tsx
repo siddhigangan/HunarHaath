@@ -1,12 +1,38 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { products } from "@/data/products";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
+import { ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
+import { getProductById } from "@/data/sharedProducts";
+import { useEffect, useState } from "react";
+import { Product as SellerProduct } from "@/data/sellers";
+import { Product } from "@/types";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const product = products.find((p) => p.id === id);
+  const { addToCart } = useCart();
+  const [product, setProduct] = useState<SellerProduct | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      const foundProduct = getProductById(id);
+      setProduct(foundProduct || null);
+      setIsLoading(false);
+    }
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-12 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-craft-terracotta mx-auto"></div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!product) {
     return (
@@ -21,6 +47,23 @@ export default function ProductDetail() {
       </Layout>
     );
   }
+
+  const handleAddToCart = () => {
+    // Convert SellerProduct to Product
+    const cartProduct: Product = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      artisan: product.artisan,
+      category: product.category,
+      description: product.description,
+      materials: product.materials,
+      inStock: true
+    };
+    addToCart(cartProduct);
+    toast.success("Product added to cart!");
+  };
 
   return (
     <Layout>
@@ -46,7 +89,7 @@ export default function ProductDetail() {
           {/* Product Image */}
           <div className="aspect-square rounded-lg overflow-hidden">
             <img
-              src={product.image}
+              src={product.images[0]}
               alt={product.name}
               className="w-full h-full object-cover"
             />
@@ -79,7 +122,11 @@ export default function ProductDetail() {
             </div>
 
             <div className="mt-8">
-              <Button className="w-full bg-craft-terracotta hover:bg-craft-clay text-lg py-6">
+              <Button 
+                className="w-full bg-craft-terracotta hover:bg-craft-clay text-lg py-6"
+                onClick={handleAddToCart}
+              >
+                <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
             </div>

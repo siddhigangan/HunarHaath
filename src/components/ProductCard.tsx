@@ -1,8 +1,8 @@
-
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Product } from "@/types";
 
 export interface ProductCardProps {
   id: string;
@@ -11,21 +11,35 @@ export interface ProductCardProps {
   image: string;
   artisan: string;
   category: string;
+  description: string;
+  materials: string[];
+  inStock: boolean;
 }
 
-export function ProductCard({ id, name, price, image, artisan, category }: ProductCardProps) {
+export function ProductCard({ id, name, price, image, artisan, category, description, materials, inStock }: ProductCardProps) {
+  const product: Product = {
+    id,
+    name,
+    price,
+    image,
+    artisan,
+    category,
+    description,
+    materials,
+    inStock
+  };
+
   return (
     <div className="card-craft group animate-fade-up">
       <div className="relative">
         <Link to={`/product/${id}`}>
           <AspectRatio ratio={4/3}>
             <div className="w-full h-full bg-craft-cream/50 flex items-center justify-center border border-dashed border-craft-forest/30">
-            
-    <img
-      src={`${image}`}
-      alt={name}
-      className="w-full h-full object-cover rounded-md"
-    />
+              <img
+                src={`${image}`}
+                alt={name}
+                className="w-full h-full object-cover rounded-md"
+              />
             </div>
           </AspectRatio>
         </Link>
@@ -45,8 +59,8 @@ export function ProductCard({ id, name, price, image, artisan, category }: Produ
         </div>
         <div className="flex justify-between items-center">
           <div>
-          <p className="text-lg font-semibold text-craft-terracotta">₹{price.toFixed(2)}</p>
-          <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-lg font-semibold text-craft-terracotta">₹{price.toFixed(2)}</p>
+            <p className="text-sm text-muted-foreground mt-1">
               By <Link to={`/artisan/${artisan.toLowerCase().replace(' ', '-')}`} className="hover:underline text-craft-forest">{artisan}</Link>
             </p>
           </div>

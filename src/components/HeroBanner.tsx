@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const heroSlides = [
   {
@@ -9,6 +10,7 @@ const heroSlides = [
     title: "Discover Artisanal Treasures",
     subtitle: "Handcrafted with Love, Created with Passion",
     cta: "Explore Collection",
+    link: "/products"
   },
   {
     id: 2,
@@ -17,6 +19,7 @@ const heroSlides = [
     title: "Authentic Handmade Delicacies",
     subtitle: "Savor the Taste of Tradition with Our Handcrafted Papads",
     cta: "Discover More",
+    link: "/category/Food"
   }, 
   {
     id: 3,
@@ -25,6 +28,7 @@ const heroSlides = [
     title: "Unique Home Decor",
     subtitle: "One-of-a-kind Pieces to Transform Your Space",
     cta: "Shop Home Decor",
+    link: "/category/home-decor"
   },
 ];
 
@@ -98,12 +102,15 @@ export function HeroBanner() {
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
                   {slide.title}
                 </h1>
-                <p className="text-lg md:text-xl text-white/90 mb-8">
+                <p className="text-xl md:text-2xl text-white/90 mb-8">
                   {slide.subtitle}
                 </p>
-                <button className="btn-craft text-lg px-8 py-3">
+                <Link
+                  to={slide.link}
+                  className="inline-block bg-craft-terracotta text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-craft-clay transition-colors"
+                >
                   {slide.cta}
-                </button>
+                </Link>
               </div>
             </div>
           ))}

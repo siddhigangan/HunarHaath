@@ -1,14 +1,15 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { totalItems } = useCart();
   
   const categories = [
     { name: "Pottery", path: "/category/pottery" },
@@ -55,17 +56,22 @@ export function Navbar() {
               />
               <Search className="absolute right-2 top-2.5 h-4 w-4 text-craft-forest/70" />
             </div>
-            <Link to="/cart">
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="h-5 w-5 text-craft-forest" />
-                <span className="absolute -top-1 -right-1 h-4 w-4 text-xs bg-craft-terracotta text-white rounded-full flex items-center justify-center">
-                  0
+            <Link to="/cart" className="relative text-gray-600 hover:text-craft-terracotta">
+              <ShoppingCart className="h-6 w-6" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-craft-terracotta text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
                 </span>
-              </Button>
+              )}
             </Link>
             <Link to="/login">
               <Button variant="ghost" size="icon">
                 <User className="h-5 w-5 text-craft-forest" />
+              </Button>
+            </Link>
+            <Link to="/seller-login">
+              <Button variant="ghost" size="icon" className="text-craft-terracotta">
+                Seller Login
               </Button>
             </Link>
             
@@ -102,29 +108,20 @@ export function Navbar() {
                 <li key={category.name}>
                   <Link
                     to={category.path}
-                    className="block py-2 px-4 text-craft-forest hover:bg-craft-cream rounded-md"
+                    className="block py-2 text-craft-forest hover:text-craft-terracotta"
                     onClick={() => setIsOpen(false)}
                   >
                     {category.name}
                   </Link>
                 </li>
               ))}
-              <li className="pt-2 border-t border-craft-earth/10">
-                <Link
-                  to="/login"
-                  className="block py-2 px-4 text-craft-forest hover:bg-craft-cream rounded-md"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sign In
-                </Link>
-              </li>
               <li>
                 <Link
-                  to="/register"
-                  className="block py-2 px-4 text-craft-forest hover:bg-craft-cream rounded-md"
+                  to="/seller-login"
+                  className="block py-2 text-craft-terracotta"
                   onClick={() => setIsOpen(false)}
                 >
-                  Register
+                  Seller Login
                 </Link>
               </li>
             </ul>

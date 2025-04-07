@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
@@ -29,11 +28,12 @@ export function Footer() {
           <div>
             <h4 className="text-lg font-serif mb-4">Categories</h4>
             <ul className="space-y-2">
-              <li><Link to="/category/pottery" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Pottery</Link></li>
-              <li><Link to="/category/jewelry" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Jewelry</Link></li>
-              <li><Link to="/category/paintings" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Paintings</Link></li>
-              <li><Link to="/category/home-decor" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Home Decor</Link></li>
-              <li><Link to="/category/clothing" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Clothing</Link></li>
+              <li><Link to="/Category/Pottery" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Pottery</Link></li>
+              <li><Link to="/Category/Jewelry" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Jewelry</Link></li>
+              <li><Link to="/Category/Food" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Food</Link></li>
+              <li><Link to="/Category/homedecor" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Home Decor</Link></li>
+              <li><Link to="/Category/Clothing" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Clothing</Link></li>
+              <li><Link to="/Category/Accessories" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Accessories</Link></li>
             </ul>
           </div>
           
@@ -43,11 +43,8 @@ export function Footer() {
               <li><Link to="/about" className="text-craft-cream/80 hover:text-craft-sand transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Contact Us</Link></li>
               <li><Link to="/faqs" className="text-craft-cream/80 hover:text-craft-sand transition-colors">FAQs</Link></li>
-              
             </ul>
           </div>
-          
-          
         </div>
         
         <div className="border-t border-craft-cream/20 mt-8 pt-8 text-center text-craft-cream/60">
