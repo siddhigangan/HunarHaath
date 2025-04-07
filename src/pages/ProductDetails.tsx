@@ -35,7 +35,7 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     if (!product) return;
-    
+
     // Convert SellerProduct to Product
     const cartProduct: Product = {
       id: product.id,
@@ -46,9 +46,10 @@ export default function ProductDetails() {
       category: product.category,
       description: product.description,
       materials: product.materials,
-      inStock: true
+      inStock: true,
+      mobile: product.mobile || "" // Add mobile field
     };
-    
+
     addToCart(cartProduct);
     toast.success("Product added to cart!");
   };
@@ -111,7 +112,7 @@ export default function ProductDetails() {
         <div>
           <h1 className="text-3xl font-serif text-craft-forest mb-4">{product.name}</h1>
           <p className="text-2xl text-craft-forest mb-6">₹{product.price}</p>
-          
+
           <div className="prose max-w-none mb-8">
             <p className="text-gray-600">{product.description}</p>
           </div>
@@ -135,6 +136,11 @@ export default function ProductDetails() {
             </Link>
           </div>
 
+          <div className="mb-8">
+            <h2 className="text-xl font-serif text-craft-forest mb-2">Contact</h2>
+            <p className="text-gray-700 font-medium">{product.mobile}</p>
+          </div>
+
           <button 
             onClick={handleAddToCart}
             className="w-full bg-craft-forest text-white py-3 px-6 rounded-lg hover:bg-craft-forest/90 transition-colors flex items-center justify-center"
@@ -146,4 +152,4 @@ export default function ProductDetails() {
       </div>
     </div>
   );
-} 
+}

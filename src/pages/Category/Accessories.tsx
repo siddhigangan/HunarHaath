@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getProductsByCategory, Product } from "@/data/sharedProducts";
+import { getProductsByCategory } from "@/data/sharedProducts";
+import { Product as SellerProduct } from "@/data/sellers";
 
 export default function AccessoriesCategory() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<SellerProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

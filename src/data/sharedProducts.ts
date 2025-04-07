@@ -15,6 +15,7 @@ const convertStaticProduct = (product: StaticProduct): SellerProduct => ({
   createdAt: new Date().toISOString(),
   isTrending: true,
   isNewArrival: true,
+  mobile: product.mobile, // ✅ Added mobile number
 });
 
 // Get all products (both static and seller-added)
