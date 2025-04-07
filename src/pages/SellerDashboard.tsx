@@ -20,9 +20,18 @@ export default function SellerDashboard() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // Check authentication on component mount
   useEffect(() => {
+    const sellerId = localStorage.getItem("sellerId");
+    const isSeller = localStorage.getItem("isSeller");
+    
+    if (!sellerId || !isSeller) {
+      navigate("/seller-login");
+      return;
+    }
+    
     loadProducts();
-  }, []);
+  }, [navigate]);
 
   const loadProducts = () => {
     try {
@@ -104,9 +113,15 @@ export default function SellerDashboard() {
   };
 
   const handleLogout = () => {
+    // Clear all authentication-related data
     localStorage.removeItem("sellerId");
     localStorage.removeItem("isSeller");
-    navigate("/");
+    
+    // Clear any session data
+    sessionStorage.clear();
+    
+    // Force a hard reload to clear any cached state
+    window.location.href = "/";
   };
 
   return (
@@ -117,7 +132,7 @@ export default function SellerDashboard() {
           onClick={handleLogout}
           className="bg-craft-terracotta text-white px-4 py-2 rounded hover:bg-craft-clay"
         >
-          Logout
+        Logout
         </button>
       </div>
 
