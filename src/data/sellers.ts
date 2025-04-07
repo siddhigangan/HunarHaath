@@ -100,4 +100,10 @@ export const getAllProducts = (): Product[] => {
 export const getProductsByCategory = (category: string): Product[] => {
   const allProducts = getAllProducts();
   return allProducts.filter(product => product.category === category);
+};
+
+// Get products by seller ID
+export const getProductsBySeller = (sellerId: string): Product[] => {
+  const seller = getSellerById(sellerId);
+  return seller ? seller.products : [];
 }; 

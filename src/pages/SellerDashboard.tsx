@@ -23,9 +23,18 @@ export default function SellerDashboard() {
 
   const categoryOptions = ["Pottery", "Clothing", "Accessories", "Food", "Jewellery", "Home Decor"];
 
+  // Check authentication on component mount
   useEffect(() => {
+    const sellerId = localStorage.getItem("sellerId");
+    const isSeller = localStorage.getItem("isSeller");
+
+    if (!sellerId || !isSeller) {
+      navigate("/seller-login");
+      return;
+    }
+
     loadProducts();
-  }, []);
+  }, [navigate]);
 
   const loadProducts = () => {
     try {
@@ -124,9 +133,15 @@ export default function SellerDashboard() {
   };
 
   const handleLogout = () => {
+    // Clear all authentication-related data
     localStorage.removeItem("sellerId");
     localStorage.removeItem("isSeller");
-    navigate("/");
+
+    // Clear any session data
+    sessionStorage.clear();
+
+    // Force a hard reload to clear any cached state
+    window.location.href = "/";
   };
 
   return (
@@ -207,20 +222,6 @@ export default function SellerDashboard() {
               required
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
-              required
-            />
-            {imagePreview && <img src={imagePreview} alt="Preview" className="h-32 w-32 object-cover rounded mt-2" />}
-          </div>
-
-          {error && <div className="text-red-500 text-sm">{error}</div>}
 
           <button type="submit" className="w-full bg-craft-terracotta text-white py-2 px-4 rounded hover:bg-craft-clay">
             Add Product

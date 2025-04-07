@@ -127,7 +127,12 @@ export default function ProductDetails() {
 
           <div className="mb-8">
             <h2 className="text-xl font-serif text-craft-forest mb-2">Artisan</h2>
-            <p className="text-gray-600">{product.artisan}</p>
+            <Link 
+              to={`/seller/${product.sellerId}`}
+              className="text-craft-terracotta hover:text-craft-clay font-medium"
+            >
+              {product.artisan}
+            </Link>
           </div>
 
           <button 
