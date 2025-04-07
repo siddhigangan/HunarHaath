@@ -14,74 +14,70 @@ const convertStaticProduct = (product: StaticProduct): SellerProduct => ({
   artisan: product.artisan,
   createdAt: new Date().toISOString(),
   isTrending: true,
-  isNewArrival: true
+  isNewArrival: true,
 });
 
 // Get all products (both static and seller-added)
 export const getAllProducts = (): SellerProduct[] => {
-  // Get seller products from localStorage
   const sellerProductsJson = localStorage.getItem("sellerProducts");
   const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
-  
-  // Convert static products to the correct format and combine with seller products
+
   const convertedStaticProducts = products.map(convertStaticProduct);
   return [...convertedStaticProducts, ...sellerProducts];
 };
 
-// Get products by category
+// ✅ FIXED: Support category as array (like ["Accessories"])
 export const getProductsByCategory = (category: string): SellerProduct[] => {
-  return getAllProducts().filter(product => product.category === category);
+  return getAllProducts().filter((product) => {
+    if (Array.isArray(product.category)) {
+      return product.category.includes(category);
+    }
+    return product.category === category;
+  });
 };
 
-// Get a specific product by ID
 export const getProductById = (id: string): SellerProduct | undefined => {
-  const allProducts = getAllProducts();
-  return allProducts.find(product => product.id === id);
+  return getAllProducts().find((product) => product.id === id);
 };
 
-// Get new arrivals (both static and seller-added)
 export const getNewArrivals = (): SellerProduct[] => {
-  const allProducts = getAllProducts();
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  
-  return allProducts.filter(product => 
-    new Date(product.createdAt) >= sevenDaysAgo
+
+  return getAllProducts().filter(
+    (product) => new Date(product.createdAt) >= sevenDaysAgo
   );
 };
 
-// Get trending products (both static and seller-added)
 export const getTrendingProducts = (): SellerProduct[] => {
-  const allProducts = getAllProducts();
-  return allProducts.filter(product => product.isTrending);
+  return getAllProducts().filter((product) => product.isTrending);
 };
 
-// Function to add a new product (for sellers)
-export const addProduct = (product: Omit<SellerProduct, "id" | "createdAt">): SellerProduct => {
+export const addProduct = (
+  product: Omit<SellerProduct, "id" | "createdAt">
+): SellerProduct => {
   const newProduct: SellerProduct = {
     ...product,
-    id: Date.now().toString(), // Generate a unique ID
+    id: Date.now().toString(),
     createdAt: new Date().toISOString(),
   };
 
-  // Get existing seller products
   const sellerProductsJson = localStorage.getItem("sellerProducts");
   const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
-  
-  // Add new product
+
   sellerProducts.push(newProduct);
-  
-  // Save back to localStorage
   localStorage.setItem("sellerProducts", JSON.stringify(sellerProducts));
 
   return newProduct;
 };
 
-// Function to update a product
-export const updateProduct = (id: string, updatedProduct: Partial<SellerProduct>): SellerProduct | undefined => {
+export const updateProduct = (
+  id: string,
+  updatedProduct: Partial<SellerProduct>
+): SellerProduct | undefined => {
   const sellerProductsJson = localStorage.getItem("sellerProducts");
   const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
-  
+
   const index = sellerProducts.findIndex((p) => p.id === id);
   if (index === -1) return undefined;
 
@@ -91,13 +87,12 @@ export const updateProduct = (id: string, updatedProduct: Partial<SellerProduct>
   return sellerProducts[index];
 };
 
-// Function to delete a product
 export const deleteProduct = (id: string): boolean => {
   const sellerProductsJson = localStorage.getItem("sellerProducts");
   const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
-  
+
   const filteredProducts = sellerProducts.filter((p) => p.id !== id);
   localStorage.setItem("sellerProducts", JSON.stringify(filteredProducts));
 
   return true;
-}; 
+};

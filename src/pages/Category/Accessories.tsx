@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getProductsByCategory } from "@/data/sharedProducts";
-import { Product as SellerProduct } from "@/data/sellers";
+import { getProductsByCategory, Product } from "@/data/sharedProducts";
 
 export default function AccessoriesCategory() {
-  const [products, setProducts] = useState<SellerProduct[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -23,16 +22,24 @@ export default function AccessoriesCategory() {
       <div className="text-sm breadcrumbs mb-6">
         <ul className="flex items-center space-x-2">
           <li>
-            <a href="/" className="text-craft-forest hover:text-craft-terracotta">Home</a>
+            <a href="/" className="text-craft-forest hover:text-craft-terracotta">
+              Home
+            </a>
           </li>
-          <li><span className="mx-2">/</span></li>
-          <li><span className="font-medium">Accessories</span></li>
+          <li>
+            <span className="mx-2">/</span>
+          </li>
+          <li>
+            <span className="font-medium">Accessories</span>
+          </li>
         </ul>
       </div>
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-serif text-craft-forest mb-2">Handcrafted Accessories</h1>
+        <h1 className="text-3xl md:text-4xl font-serif text-craft-forest mb-2">
+          Handcrafted Accessories
+        </h1>
         <p className="text-craft-forest/80 max-w-3xl">
           Discover unique accessories crafted by talented artisans. Each piece tells a story of tradition and craftsmanship.
         </p>
@@ -52,4 +59,4 @@ export default function AccessoriesCategory() {
       )}
     </div>
   );
-} 
+}
