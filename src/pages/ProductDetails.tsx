@@ -43,7 +43,7 @@ export default function ProductDetails() {
       price: product.price,
       image: product.images[0],
       artisan: product.artisan,
-      category: product.category,
+      category: Array.isArray(product.category) ? product.category[0] : product.category,
       description: product.description,
       materials: product.materials,
       inStock: true,
@@ -89,8 +89,8 @@ export default function ProductDetails() {
           </li>
           <li>/</li>
           <li>
-            <Link to={`/category/${product.category.toLowerCase()}`} className="hover:text-craft-forest">
-              {product.category}
+            <Link to={`/category/${Array.isArray(product.category) ? product.category[0].toLowerCase() : product.category.toLowerCase()}`} className="hover:text-craft-forest">
+              {Array.isArray(product.category) ? product.category[0] : product.category}
             </Link>
           </li>
           <li>/</li>
@@ -128,12 +128,18 @@ export default function ProductDetails() {
 
           <div className="mb-8">
             <h2 className="text-xl font-serif text-craft-forest mb-2">Artisan</h2>
-            <Link 
-              to={`/seller/${product.sellerId}`}
-              className="text-craft-terracotta hover:text-craft-clay font-medium"
-            >
-              {product.artisan}
-            </Link>
+            {product.sellerId && product.sellerId !== "static" ? (
+              <Link 
+                to={`/seller/${product.sellerId}`}
+                className="text-craft-terracotta hover:text-craft-clay font-medium"
+              >
+                {product.artisan}
+              </Link>
+            ) : (
+              <span className="text-craft-terracotta font-medium">
+                {product.artisan}
+              </span>
+            )}
           </div>
 
           <div className="mb-8">

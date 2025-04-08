@@ -17,7 +17,6 @@ export default function SellerDashboard() {
     artisan: "",
     images: [] as string[],
     mobile: "",
-    sellerName: "",
   });
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -86,29 +85,34 @@ export default function SellerDashboard() {
       return;
     }
 
-    let finalCategories = [...new Set([...newProduct.category, "Accessories"])]
-    if (finalCategories.length === 0) {
+    if (newProduct.category.length === 0) {
       setError("Please select at least one category");
       return;
     }
 
     try {
+      const sellerId = localStorage.getItem("sellerId");
+      if (!sellerId) {
+        setError("Seller ID not found. Please log in again.");
+        return;
+      }
+
       const productData = {
         ...newProduct,
         price: parseFloat(newProduct.price),
         materials: newProduct.materials.split(",").map((m) => m.trim()),
-        sellerId: "seller_" + Date.now(),
-        category: finalCategories,
+        sellerId: sellerId,
+        category: newProduct.category,
         mobile: newProduct.mobile,
         isTrending: false,
-        isNewArrival: true,
-        createdAt: new Date().toISOString(),
+        inStock: true,
       };
 
       console.log("🟢 Adding product:", productData);
       addProduct(productData);
       loadProducts();
 
+      // Reset form
       setNewProduct({
         name: "",
         description: "",
@@ -118,7 +122,6 @@ export default function SellerDashboard() {
         artisan: "",
         images: [],
         mobile: "",
-        sellerName: "",
       });
       setSelectedImage(null);
       setImagePreview(null);
@@ -197,11 +200,11 @@ export default function SellerDashboard() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Seller Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Artisan Name</label>
             <input
               type="text"
-              value={newProduct.sellerName}
-              onChange={(e) => setNewProduct({ ...newProduct, sellerName: e.target.value })}
+              value={newProduct.artisan}
+              onChange={(e) => setNewProduct({ ...newProduct, artisan: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
               required
             />
@@ -222,6 +225,18 @@ export default function SellerDashboard() {
                 </label>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Materials</label>
+            <input
+              type="text"
+              value={newProduct.materials}
+              onChange={(e) => setNewProduct({ ...newProduct, materials: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
+              placeholder="Enter materials separated by commas"
+              required
+            />
           </div>
 
           <div>
@@ -252,6 +267,10 @@ export default function SellerDashboard() {
               />
             )}
           </div>
+
+          {error && (
+            <div className="text-red-500 text-sm">{error}</div>
+          )}
 
           <button
             type="submit"

@@ -14,9 +14,21 @@ export interface ProductCardProps {
   description: string;
   materials: string[];
   inStock: boolean;
+  sellerId?: string;
 }
 
-export function ProductCard({ id, name, price, image, artisan, category, description, materials, inStock }: ProductCardProps) {
+export function ProductCard({ 
+  id, 
+  name, 
+  price, 
+  image, 
+  artisan, 
+  category, 
+  description, 
+  materials, 
+  inStock,
+  sellerId 
+}: ProductCardProps) {
   const product: Product = {
     id,
     name,
@@ -51,25 +63,30 @@ export function ProductCard({ id, name, price, image, artisan, category, descrip
           <Heart className="h-4 w-4 text-craft-terracotta" />
         </Button>
       </div>
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <Link to={`/product/${id}`} className="hover:underline">
-            <h3 className="font-medium text-lg line-clamp-1">{name}</h3>
-          </Link>
+      
+      <div className="flex justify-between items-start mb-2">
+        <Link to={`/product/${id}`} className="hover:underline">
+          <h3 className="font-medium text-lg line-clamp-1">{name}</h3>
+        </Link>
+      </div>
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-lg font-semibold text-craft-terracotta">₹{price.toFixed(2)}</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            By {sellerId && sellerId !== "static" ? (
+              <Link to={`/seller/${sellerId}`} className="hover:underline text-craft-forest">
+                {artisan}
+              </Link>
+            ) : (
+              <span className="text-craft-forest">{artisan}</span>
+            )}
+          </p>
         </div>
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-lg font-semibold text-craft-terracotta">₹{price.toFixed(2)}</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              By <Link to={`/artisan/${artisan.toLowerCase().replace(' ', '-')}`} className="hover:underline text-craft-forest">{artisan}</Link>
-            </p>
-          </div>
-          <Link to={`/category/${category.toLowerCase()}`}>
-            <span className="text-xs px-2 py-1 bg-craft-cream rounded-full text-craft-forest">
-              {category}
-            </span>
-          </Link>
-        </div>
+        <Link to={`/category/${category.toLowerCase()}`}>
+          <span className="text-xs px-2 py-1 bg-craft-cream rounded-full text-craft-forest">
+            {category}
+          </span>
+        </Link>
       </div>
     </div>
   );

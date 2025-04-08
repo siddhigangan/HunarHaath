@@ -22,6 +22,7 @@ import Faqs from "./pages/Faqs";
 import ClothingCategory from "@/pages/Category/Clothing";
 import AccessoriesCategory from "@/pages/Category/Accessories";
 import SellerProfile from "@/pages/SellerProfile";
+import Sellers from "./pages/Sellers";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ export function App() {
                 <Route path="about" element={<AboutUs />} />
                 <Route path="contact" element={<ContactUs />} />
                 <Route path="faqs" element={<Faqs />} />
+                <Route path="/sellers" element={<Sellers />} />
               </Route>
             </Routes>
           </Router>

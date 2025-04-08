@@ -8,6 +8,7 @@ export interface Product {
   description: string;
   materials: string[];
   inStock: boolean;
+  mobile?: string;
 }
 
 export interface CartItem extends Product {

@@ -60,6 +60,9 @@ export function Navbar() {
                   {category.name}
                 </Link>
               ))}
+              <Link to="/sellers" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                Sellers
+              </Link>
             </div>
           )}
 
@@ -145,6 +148,15 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/sellers"
+                  className="block py-2 text-craft-terracotta"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sellers
+                </Link>
+              </li>
               {isSeller ? (
                 <>
                   <li>
