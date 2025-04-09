@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getProductsByCategory } from "@/data/sharedProducts";
+import { getProductsByCategory, getAllProducts } from "@/data/sharedProducts";
 import { Product as SellerProduct } from "@/data/sellers";
 
 export default function PotteryCategory() {
   const [products, setProducts] = useState<SellerProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [debug, setDebug] = useState<string>("");
 
   useEffect(() => {
     const loadProducts = () => {
-      const potteryProducts = getProductsByCategory("Pottery");
-      setProducts(potteryProducts);
-      setIsLoading(false);
+      try {
+        console.log("Loading pottery products...");
+        
+        // Get all products first for debugging
+        const allProducts = getAllProducts();
+        console.log(`Total products available: ${allProducts.length}`);
+        
+        // Get products for this category
+        const potteryProducts = getProductsByCategory("Pottery");
+        console.log(`Found ${potteryProducts.length} pottery products`);
+        
+        // Set products and update debug info
+        setProducts(potteryProducts);
+        setDebug(`Loaded ${potteryProducts.length} pottery products out of ${allProducts.length} total products`);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error loading pottery products:", error);
+        setDebug(`Error: ${error instanceof Error ? error.message : String(error)}`);
+        setIsLoading(false);
+      }
     };
 
     loadProducts();
@@ -36,6 +54,11 @@ export default function PotteryCategory() {
         <p className="text-craft-forest/80 max-w-3xl">
           Discover unique pottery pieces crafted by talented artisans. Each piece tells a story of tradition and craftsmanship.
         </p>
+      </div>
+
+      {/* Debug info */}
+      <div className="mb-4 p-4 bg-gray-100 rounded text-sm">
+        {debug}
       </div>
 
       {/* Products Grid */}

@@ -75,22 +75,39 @@ export const createSeller = (sellerData: Omit<Seller, 'id' | 'createdAt' | 'prod
 };
 
 // Add a product to a seller's profile
-export const addProductToSeller = (sellerId: string, productData: Omit<Product, 'id'>): Product => {
+export const addProductToSeller = (sellerId: string, product: Omit<Product, "id">) => {
   const sellers = getSellers();
-  const sellerIndex = sellers.findIndex(s => s.id === sellerId);
+  const seller = sellers.find(s => s.id === sellerId);
+  
+  if (!seller) {
+    throw new Error("Seller not found");
+  }
 
-  if (sellerIndex === -1) {
-    throw new Error('Seller not found');
+  // Check if product with same name already exists
+  const existingProduct = seller.products.find(p => p.name === product.name);
+  if (existingProduct) {
+    console.log(`Product "${product.name}" already exists for seller ${seller.name}`);
+    return existingProduct;
   }
 
   const newProduct: Product = {
-    ...productData,
+    ...product,
     id: generateId(),
-    inStock: true
   };
 
-  sellers[sellerIndex].products.push(newProduct);
-  localStorage.setItem('sellers', JSON.stringify(sellers));
+  // Add to seller's products
+  seller.products.push(newProduct);
+  localStorage.setItem("sellers", JSON.stringify(sellers));
+  
+  // Update sellerProducts in localStorage
+  const sellerProducts = JSON.parse(localStorage.getItem("sellerProducts") || "[]");
+  // Check if product already exists in sellerProducts
+  const existingInSellerProducts = sellerProducts.find((p: Product) => p.name === product.name && p.artisan === product.artisan);
+  if (!existingInSellerProducts) {
+    sellerProducts.push(newProduct);
+    localStorage.setItem("sellerProducts", JSON.stringify(sellerProducts));
+  }
+
   return newProduct;
 };
 
@@ -124,99 +141,110 @@ export const initializeSampleSellers = () => {
       name: "Pravin Kalbande",
       contact: "9763638104",
       mobile: "9763638104",
-      email: "pravin@example.com",
+      email: "pravink11@gmail.com",
       categories: ["Pottery", "Home Decor"],
       photo: "/praveen.jpg",
-      address: "123 Pottery Lane, Mumbai, Maharashtra",
-      shopAddress: "456 Craft Market, Mumbai, Maharashtra",
+      address: "Arni, Maharashtra",
+      shopAddress: "Kothari Market, Arni, Maharashtra",
       password: "password123"
     },
     {
       name: "Veena Soni",
       contact: "9423700979",
       mobile: "9423700979",
-      email: "veena@example.com",
+      email: "veenasoni@gmail.com",
       categories: ["Clothing", "Accessories"],
       photo: "/veena.jpg",
-      address: "789 Textile Street, Ahmedabad, Gujarat",
-      shopAddress: "321 Fashion District, Ahmedabad, Gujarat",
+      address: "Amravati, Maharashtra",
+      shopAddress: "Mahesh nagar, Amravati, Maharashtra",
       password: "password123"
     },
     {
       name: "Lalita Nahar",
       contact: "8623498491",
       mobile: "8623498491",
-      email: "lalita@example.com",
+      email: "lalitanahar05@gmail.com",
       categories: ["Home Decor", "Accessories"],
       photo: "/lalita.jpg",
-      address: "555 Weaving Road, Jaipur, Rajasthan",
-      shopAddress: "777 Craft Bazaar, Jaipur, Rajasthan",
+      address: "Hinganghat, Maharashtra",
+      shopAddress: "Mahavir Chowk, Hinganghat, Maharashtra",
       password: "password123"
     },
     {
-      name: "Maya Patel",
-      contact: "9876543215",
-      mobile: "9876543215",
-      email: "maya@example.com",
+      name: "Salmaan Sheikh",
+      contact: "8080665475",
+      mobile: "8080665475",
+      email: "sheikhsalmaan@gmail.com",
       categories: ["Home Decor", "Furniture"],
-      photo: "/Artisian.jpg",
-      address: "888 Artisan Colony, Bangalore, Karnataka",
-      shopAddress: "999 Design Hub, Bangalore, Karnataka",
+      photo: "/salmaan.jpg",
+      address: "Arni, Maharashtra",
+      shopAddress: "Nandanvan Colony, Arni, Maharashtra",
       password: "password123"
     },
     {
-      name: "Dinesh Rawat",
-      contact: "9876543216",
-      mobile: "9876543216",
-      email: "dinesh@example.com",
+      name: "Deepak Singh",
+      contact: "8057104379",
+      mobile: "8057104379",
+      email: "deepaksingh@gmail.com",
       categories: ["Pottery", "Home Decor"],
       photo: "/deepak.jpg",
-      address: "444 Clay Street, Delhi, Delhi",
-      shopAddress: "222 Craft Corner, Delhi, Delhi",
+      address: "Amravati, Maharashtra",
+      shopAddress: "Nawathe Nagar, Amravati, Maharashtra",
       password: "password123"
     },
     {
-      name: "Madhvi Bhide",
-      contact: "9876543217",
-      mobile: "9876543217",
-      email: "madhvi@example.com",
+      name: "Sunita Pitliya",
+      contact: "9822215764",
+      mobile: "9822215764",
+      email: "sunita_07@gmail.com",
       categories: ["Food", "Spices"],
       photo: "/Artisian.jpg",
-      address: "333 Spice Lane, Pune, Maharashtra",
-      shopAddress: "111 Food Market, Pune, Maharashtra",
+      address: "Hinganghat, Maharashtra",
+      shopAddress: "Karanja chowk, Hinganghat, Maharashtra",
       password: "password123"
     },
     {
       name: "Shubhangi Dhok",
       contact: "9876543225",
       mobile: "9876543225",
-      email: "shubhangi@example.com",
+      email: "shubhadhok@gmail.com",
       categories: ["Food", "Spices"],
       photo: "/shubhangi.jpg",
-      address: "777 Papad Street, Nagpur, Maharashtra",
-      shopAddress: "888 Food Market, Nagpur, Maharashtra",
+      address: "Amravati, Maharashtra",
+      shopAddress: "Akoli road, Amravati, Maharashtra",
       password: "password123"
     },
     {
       name: "Sandip Lad",
       contact: "9876543227",
       mobile: "9876543227",
-      email: "sandip@example.com",
+      email: "sandipLad@gmail.com",
       categories: ["Home Decor", "Art"],
-      photo: null,
-      address: "999 Art Street, Kolhapur, Maharashtra",
-      shopAddress: "555 Art Gallery, Kolhapur, Maharashtra",
+      photo: "/sandip.jpg",
+      address: "Arni, Maharashtra",
+      shopAddress: "New Bypass Road, Arni, Maharashtra",
+      password: "password123"
+    },
+    {
+      name: "Shraddha Pande",
+      contact: "9876543228",
+      mobile: "9876543228",
+      email: "shraddhapande@gmail.com",
+      categories: ["Jewelry", "Accessories"],
+      photo: "/shraddha.jpg",
+      address: "Amravati, Maharashtra",
+      shopAddress: "Rajapeth, Amravati, Maharashtra",
       password: "password123"
     }
   ];
 
-  // Check each sample seller and create if not exists
+  // Clear existing sellers and add only the specified ones
+  localStorage.setItem('sellers', JSON.stringify([]));
+  
+  // Add each sample seller
   sampleSellers.forEach(sellerData => {
-    const existingSeller = existingSellers.find(s => s.email === sellerData.email);
-    if (!existingSeller) {
-      console.log(`Creating seller: ${sellerData.name}`);
-      createSeller(sellerData);
-    }
+    console.log(`Creating seller: ${sellerData.name}`);
+    createSeller(sellerData);
   });
 
   // Initialize products for all sellers
@@ -227,20 +255,29 @@ export const initializeSampleSellers = () => {
 
 // Initialize sample products for sellers
 const initializeSampleProducts = () => {
+  // Clear existing products first
+  localStorage.setItem("sellerProducts", JSON.stringify([]));
+  
   const sellers = getSellers();
   
   // Find sellers by name
   const pravin = sellers.find(s => s.name === "Pravin Kalbande");
   const veena = sellers.find(s => s.name === "Veena Soni");
   const lalita = sellers.find(s => s.name === "Lalita Nahar");
-  const maya = sellers.find(s => s.name === "Maya Patel");
-  const dinesh = sellers.find(s => s.name === "Dinesh Rawat");
-  const madhvi = sellers.find(s => s.name === "Madhvi Bhide");
+  const salmaan = sellers.find(s => s.name === "Salmaan Sheikh");
+  const deepak = sellers.find(s => s.name === "Deepak Singh");
+  const sunita = sellers.find(s => s.name === "Sunita Pitliya");
   const shubhangi = sellers.find(s => s.name === "Shubhangi Dhok");
   const sandip = sellers.find(s => s.name === "Sandip Lad");
+  const shraddha = sellers.find(s => s.name === "Shraddha Pande");
+  
+  // Helper function to check if a product already exists
+  const productExists = (seller: any, productName: string) => {
+    return seller.products.some((p: any) => p.name === productName);
+  };
   
   // Add products for Pravin
-  if (pravin) {
+  if (pravin && !productExists(pravin, "Handmade Pot")) {
     addProductToSeller(pravin.id, {
       name: "Handmade Pot",
       description: "Handcrafted red clay pot with a glossy finish and golden Swastik symbol. Perfect for festive decor or traditional rituals.",
@@ -252,7 +289,9 @@ const initializeSampleProducts = () => {
       mobile: pravin.mobile,
       inStock: true
     });
-    
+  }
+  
+  if (pravin && !productExists(pravin, "Piggy bank")) {
     addProductToSeller(pravin.id, {
       name: "Piggy bank",
       description: "Handmade terracotta piggy bank with a glossy red finish and golden top. A traditional and elegant way to save coins.",
@@ -267,7 +306,7 @@ const initializeSampleProducts = () => {
   }
   
   // Add products for Veena
-  if (veena) {
+  if (veena && !productExists(veena, "God's cloth Ghagra")) {
     addProductToSeller(veena.id, {
       name: "God's cloth Ghagra",
       description: "This vibrant handcrafted traditional dress features intricate mirror work and a rich magenta base, accented with blue and gold borders. Perfect for festive occasions or cultural celebrations.",
@@ -282,7 +321,7 @@ const initializeSampleProducts = () => {
   }
   
   // Add products for Lalita
-  if (lalita) {
+  if (lalita && !productExists(lalita, "Door mat")) {
     addProductToSeller(lalita.id, {
       name: "Door mat",
       description: "Vibrant handwoven mat made from multi-colored yarn scraps. A playful touch for stools, tables, or home décor.",
@@ -294,7 +333,9 @@ const initializeSampleProducts = () => {
       mobile: lalita.mobile,
       inStock: true
     });
-    
+  }
+  
+  if (lalita && !productExists(lalita, "Handkerchief")) {
     addProductToSeller(lalita.id, {
       name: "Handkerchief",
       description: "Soft pink handkerchief with delicate crochet lace and a hand-embroidered floral motif. A charming touch of tradition and care.",
@@ -308,113 +349,90 @@ const initializeSampleProducts = () => {
     });
   }
   
-  // Add products for Maya
-  if (maya) {
-    addProductToSeller(maya.id, {
+  // Add products for Salmaan
+  if (salmaan && !productExists(salmaan, "Paint Brush Stand")) {
+    addProductToSeller(salmaan.id, {
       name: "Paint Brush Stand",
       description: "This handcrafted bamboo brush stand offers a stylish and durable way to organize and display brushes, perfect for artists and calligraphers.",
       price: 125,
       category: "Home Decor",
       image: "/brush_stand.jpg",
       materials: ["Eco-friendly Bamboo", "Smooth Lacquer Coating"],
-      artisan: "Maya Patel",
-      mobile: maya.mobile,
+      artisan: "Salmaan Sheikh",
+      mobile: salmaan.mobile,
       inStock: true
     });
   }
   
-  // Add products for Dinesh
-  if (dinesh) {
-    addProductToSeller(dinesh.id, {
+  // Add products for Deepak
+  if (deepak && !productExists(deepak, "Clay Bottle")) {
+    addProductToSeller(deepak.id, {
       name: "Clay Bottle",
       description: "Handcrafted from natural clay and finished with a smooth glaze for durability and elegance.",
       price: 120,
       category: "Pottery",
       image: "/clay_bottle.jpg",
       materials: ["Pure Natural Clay", "Lead-free Coating"],
-      artisan: "Dinesh Rawat",
-      mobile: dinesh.mobile,
+      artisan: "Deepak Singh",
+      mobile: deepak.mobile,
       inStock: true
     });
   }
   
-  // Add products for Madhvi
-  if (madhvi) {
-    addProductToSeller(madhvi.id, {
+  // Add products for Sunita
+  if (sunita && !productExists(sunita, "Homemade Pickle")) {
+    addProductToSeller(sunita.id, {
       name: "Homemade Pickle",
       description: "Homemade with fresh ingredients, this flavorful pickle is crafted for a perfect balance of taste and tradition.",
       price: 160,
       category: "Food",
       image: "/picke.jpg",
       materials: ["Natural Spices", "Fresh Organic Ingredients"],
-      artisan: "Madhvi Bhide",
-      mobile: madhvi.mobile,
+      artisan: "Sunita Pitliya",
+      mobile: sunita.mobile,
       inStock: true
     });
-    
-    addProductToSeller(madhvi.id, {
+  }
+  
+  if (sunita && !productExists(sunita, "Papad")) {
+    addProductToSeller(sunita.id, {
       name: "Papad",
       description: "Crispy and flavorful, this handmade papad is crafted using traditional recipes with the finest natural ingredients. Perfect as a crunchy side dish or a light snack.",
       price: 50,
       category: "Food",
       image: "/papad.jpg",
       materials: ["Lentil flour", "Natural spices", "Sun-dried"],
-      artisan: "Madhvi Bhide",
-      mobile: madhvi.mobile,
+      artisan: "Sunita Pitliya",
+      mobile: sunita.mobile,
       inStock: true
     });
-    
-    addProductToSeller(madhvi.id, {
+  }
+  
+  if (sunita && !productExists(sunita, "Coriander powder")) {
+    addProductToSeller(sunita.id, {
       name: "Coriander powder",
       description: "Freshly ground coriander powder made from premium quality coriander seeds, perfect for enhancing the flavor of your dishes.",
       price: 50,
       category: "Food",
       image: "/Corianderpowder.jpg",
       materials: ["Coriander seeds", "Natural grinding"],
-      artisan: "Madhvi Bhide",
-      mobile: madhvi.mobile,
+      artisan: "Sunita Pitliya",
+      mobile: sunita.mobile,
       inStock: true
     });
   }
   
-  // Add products for Shubhangi
-  if (shubhangi) {
-    addProductToSeller(shubhangi.id, {
-      name: "Jowary Papad (Nachni papad)",
-      description: "Crispy and wholesome, Jowar (sorghum) and Nachni (ragi) papads are crafted using traditional recipes to deliver a delightful crunch and earthy flavor. Perfect as a light snack or a flavorful accompaniment to meals, these papads are sun-dried for a natural finish.",
-      price: 120,
-      category: "Food",
-      image: "/papad3.jpg",
-      materials: ["Nachni (ragi) flour", "Jowar flour", "Natural spices", "Sun-dried", "Salt"],
-      artisan: "Shubhangi Dhok",
-      mobile: shubhangi.mobile,
-      inStock: true
-    });
-    
-    addProductToSeller(shubhangi.id, {
-      name: "Jowary Papad",
-      description: "Crispy and flavorful, this handmade aloo sabudana papad combines the goodness of potatoes and tapioca pearls with natural spices. A perfect snack or side dish that's sun-dried to perfection!",
-      price: 90,
-      category: "Food",
-      image: "/papad4.jpg",
-      materials: ["Sabudana", "Aloo", "Natural spices", "Sun-dried"],
-      artisan: "Shubhangi Dhok",
-      mobile: shubhangi.mobile,
-      inStock: true
-    });
-  }
-  
-  // Add products for Sandip
-  if (sandip) {
-    addProductToSeller(sandip.id, {
-      name: "Gajanan Maharaj",
-      description: "Beautiful handcrafted statue of Gajanan Maharaj, perfect for home decor and spiritual spaces.",
-      price: 2500,
-      category: "Home Decor",
-      image: "/Gajanan_Maharaj.jpg",
-      materials: ["Fibre", "Colours"],
-      artisan: "Sandip Lad",
-      mobile: sandip.mobile,
+  // Add products for Shraddha
+  if (shraddha && !productExists(shraddha, "Handmade Jewelry Set")) {
+    addProductToSeller(shraddha.id, {
+      name: "Handmade Jewelry Set",
+      description: "Elegant handmade jewelry set featuring traditional designs with modern aesthetics. Perfect for special occasions.",
+      price: 299,
+      category: "Jewelry",
+      image: "/jewelry1.jpg",
+      materials: ["Silver", "Semi-precious stones", "Traditional beads"],
+      artisan: "Shraddha Pande",
+      mobile: shraddha.mobile,
       inStock: true
     });
   }

@@ -5,10 +5,20 @@ import { Product as SellerProduct } from "@/data/sellers";
 
 export function NewArrivals() {
   const [products, setProducts] = useState<SellerProduct[]>([]);
+  const [debug, setDebug] = useState<string>("");
 
   useEffect(() => {
-    const newArrivalsProducts = getNewArrivals();
-    setProducts(newArrivalsProducts);
+    try {
+      console.log("NewArrivals component mounted");
+      const newArrivalsProducts = getNewArrivals();
+      console.log("Fetched new arrivals:", newArrivalsProducts);
+      const limitedProducts = newArrivalsProducts.slice(0, 8);
+      setProducts(limitedProducts);
+      setDebug(`Found ${newArrivalsProducts.length} new arrivals, displaying ${limitedProducts.length}`);
+    } catch (error) {
+      console.error("Error loading new arrivals:", error);
+      setDebug(`Error: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }, []);
 
   return (
@@ -20,22 +30,31 @@ export function NewArrivals() {
             View all →
           </a>
         </div>
+        <div className="mb-4 text-sm text-gray-500">
+          {debug}
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              image={product.images?.[0] || ""}
-              artisan={product.artisan}
-              category={Array.isArray(product.category) ? product.category[0] : product.category}
-              description={product.description}
-              materials={product.materials}
-              inStock={product.inStock}
-              sellerId={product.sellerId}
-            />
-          ))}
+          {products.length > 0 ? (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                image={product.images?.[0] || ""}
+                artisan={product.artisan}
+                category={Array.isArray(product.category) ? product.category[0] : product.category}
+                description={product.description}
+                materials={product.materials}
+                inStock={product.inStock}
+                sellerId={product.sellerId}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-8 text-gray-500">
+              No new arrivals found
+            </div>
+          )}
         </div>
       </div>
     </section>

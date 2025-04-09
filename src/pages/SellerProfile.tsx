@@ -40,11 +40,19 @@ export default function SellerProfile() {
         // Get products from sellerProducts localStorage
         const allProducts = getAllProducts();
         
-        // Filter products by seller ID or artisan name
-        const sellerProducts = allProducts.filter(product => 
-          (product.sellerId === id) || 
-          (product.artisan === sellerData.name)
-        );
+        // Filter products by seller ID or artisan name, but prioritize sellerId match
+        const sellerProducts = allProducts.filter(product => {
+          // First check if the product belongs to this seller by ID
+          if (product.sellerId === id) {
+            return true;
+          }
+          // If no sellerId match, check if the artisan name matches
+          if (product.artisan === sellerData.name) {
+            // Only include if the product doesn't already have a sellerId
+            return !product.sellerId;
+          }
+          return false;
+        });
         
         console.log("Filtered products for seller:", sellerProducts);
         

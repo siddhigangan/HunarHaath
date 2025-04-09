@@ -23,6 +23,8 @@ import ClothingCategory from "@/pages/Category/Clothing";
 import AccessoriesCategory from "@/pages/Category/Accessories";
 import SellerProfile from "@/pages/SellerProfile";
 import Sellers from "./pages/Sellers";
+import CustomizeProduct from "./pages/CustomizeProduct";
+import AllProducts from "./pages/AllProducts";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +64,8 @@ export function App() {
                 <Route path="contact" element={<ContactUs />} />
                 <Route path="faqs" element={<Faqs />} />
                 <Route path="/sellers" element={<Sellers />} />
+                <Route path="/customize-product" element={<CustomizeProduct />} />
+                <Route path="/all-products" element={<AllProducts />} />
               </Route>
             </Routes>
           </Router>

@@ -43,6 +43,7 @@ export function Footer() {
               <li><Link to="/about" className="text-craft-cream/80 hover:text-craft-sand transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Contact Us</Link></li>
               <li><Link to="/faqs" className="text-craft-cream/80 hover:text-craft-sand transition-colors">FAQs</Link></li>
+              <li><Link to="/customize-product" className="text-craft-cream/80 hover:text-craft-sand transition-colors">Customize your product</Link></li>
             </ul>
           </div>
         </div>

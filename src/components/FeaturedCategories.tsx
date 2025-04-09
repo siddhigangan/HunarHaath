@@ -10,12 +10,12 @@ export function FeaturedCategories() {
   const categories: Category[] = [
     {
       name: "Pottery",
-      image: "/potterythumb.jpg",
+      image: "/potterytheme.jpg",
       path: "/category/pottery",
     },
     {
       name: "Jewelry",
-      image: "/jewthumb.jpg",
+      image: "/jeweltheme.jpg",
       path: "/category/jewelry",
     },
     {
@@ -25,7 +25,7 @@ export function FeaturedCategories() {
     },
     {
       name: "Food",
-      image: "/papad.jpg", // ✅ Fixed filename & path
+      image: "/foodtheme.jpg", // ✅ Fixed filename & path
       path: "/category/food",
     },
   ];

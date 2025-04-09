@@ -5,10 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Search, ShoppingCart, User, Menu, X, LogOut } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useCart } from "@/context/CartContext";
+import { getAllProducts } from '@/data/sharedProducts';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const isMobile = useIsMobile();
   const { totalItems } = useCart();
   const navigate = useNavigate();
@@ -26,6 +29,16 @@ export function Navbar() {
     sessionStorage.clear();
     setIsSeller(false);
     window.location.href = "/";
+  };
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+    const products = getAllProducts();
+    const results = products.filter(product =>
+      product.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
+      product.artisan.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setSearchResults(results);
   };
 
   const categories = [
@@ -50,7 +63,7 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           {!isMobile && (
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-8 ml-8 text-sm">
               {categories.map((category) => (
                 <Link
                   key={category.name}
@@ -60,7 +73,13 @@ export function Navbar() {
                   {category.name}
                 </Link>
               ))}
-              <Link to="/sellers" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              <Link
+                to="/all-products"
+                className="text-craft-forest hover:text-craft-terracotta transition-colors duration-200 mx-4 text-sm"
+              >
+                View All Products
+              </Link>
+              <Link to="/sellers" className="text-craft-forest hover:text-craft-terracotta px-3 py-2 rounded-md text-sm font-medium">
                 Sellers
               </Link>
             </div>
@@ -68,13 +87,36 @@ export function Navbar() {
 
           {/* Search, Cart, and Profile */}
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex relative w-64">
+            <div className="relative hidden md:flex w-64">
               <Input
                 type="text"
                 placeholder="Search crafts..."
+                value={searchQuery}
+                onChange={handleSearch}
                 className="pr-8 border-craft-earth/30 focus-visible:ring-craft-terracotta/50"
               />
               <Search className="absolute right-2 top-2.5 h-4 w-4 text-craft-forest/70" />
+              {searchResults.length > 0 && (
+                <div className="absolute left-0 right-0 bg-white shadow-lg rounded-md mt-2 max-h-60 overflow-y-auto border border-gray-200 z-10">
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => setSearchResults([])}
+                      className="text-craft-terracotta hover:bg-gray-100 px-2 py-1"
+                    >
+                      Close
+                    </button>
+                  </div>
+                  {searchResults.map((product) => (
+                    <Link
+                      key={product.id}
+                      to={`/product/${product.id}`}
+                      className="block px-4 py-2 hover:bg-gray-100 text-craft-forest"
+                    >
+                      {product.name} by {product.artisan}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
             <Link to="/cart" className="relative text-gray-600 hover:text-craft-terracotta">
               <ShoppingCart className="h-6 w-6" />
@@ -124,6 +166,8 @@ export function Navbar() {
               <Input
                 type="text"
                 placeholder="Search crafts..."
+                value={searchQuery}
+                onChange={handleSearch}
                 className="w-full pr-8 border-craft-earth/30 focus-visible:ring-craft-terracotta/50"
               />
               <Search className="absolute right-2 top-2.5 h-4 w-4 text-craft-forest/70" />
@@ -148,6 +192,15 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/all-products"
+                  className="block py-2 text-craft-terracotta mx-4"
+                  onClick={() => setIsOpen(false)}
+                >
+                  View All Products
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/sellers"

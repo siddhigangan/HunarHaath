@@ -51,19 +51,7 @@ export const products: Product[] = [
     inStock: true,
     mobile: "9763638104",
   },
-  {
-    id: "4",
-    name: "Door mat",
-    price: 200,
-    image: "/doormat1.jpeg",
-    artisan: "Lalita Nahar",
-    category: "home-decor", 
-    description:
-      "Vibrant handwoven mat made from multi-colored yarn scraps. A playful touch for stools, tables, or home décor.",
-    materials: ["Recycled yarn","cotton"],
-    inStock: true,
-    mobile: "8623498491",
-  },
+
   {
     id: "5",
     name: "Handerhandkerchief",
@@ -77,25 +65,13 @@ export const products: Product[] = [
     inStock: true,
     mobile: "8623498491",
   },
-  {
-    id: "6",
-    name: "Paint Brush Stand",
-    price: 125,
-    image: "/brush_stand.jpg",
-    artisan: "Maya Patel",
-    category: "home-decor", 
-    description:
-      "This handcrafted bamboo brush stand offers a stylish and durable way to organize and display brushes, perfect for artists and calligraphers.",
-    materials: ["Eco-friendly Bamboo", "Smooth Lacquer Coating"],
-    inStock: true,
-    mobile: "9876543215",
-  },
+  
   {
     id: "7",
     name: "Clay Bottle",
     price: 120,
     image: "/clay_bottle.jpg",
-    artisan: "Dinesh Rawat",
+    artisan: "Shubham Nanhe",
     category: "Pottery",
     description:
       "Handcrafted from natural clay and finished with a smooth glaze for durability and elegance.",

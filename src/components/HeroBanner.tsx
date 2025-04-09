@@ -10,11 +10,11 @@ const heroSlides = [
     title: "Discover Artisanal Treasures",
     subtitle: "Handcrafted with Love, Created with Passion",
     cta: "Explore Collection",
-    link: "/products"
+    link: "/all-products"
   },
   {
     id: 2,
-    image: "/papad.jpg",
+    image: "/foodtheme.jpg",
     alt: "Handcrafted crispy papads",
     title: "Authentic Handmade Delicacies",
     subtitle: "Savor the Taste of Tradition with Our Handcrafted Papads",

@@ -7,12 +7,16 @@ const convertStaticProduct = (product: StaticProduct): SellerProduct => {
   const sellers = getSellers();
   const seller = sellers.find(s => s.name === product.artisan);
   
-  // Only mark the first 4 products as trending
-  const isTrending = parseInt(product.id) <= 4;
+  // Mark products with IDs 1-8 as trending (increased from 4 to 8)
+  const isTrending = parseInt(product.id) <= 8;
   
-  // Set createdAt to a date 10 days ago for static products
+  // Set createdAt to a date 5 days ago for static products (changed from 10 to 5)
+  // This ensures they appear in New Arrivals
   const createdAt = new Date();
-  createdAt.setDate(createdAt.getDate() - 10);
+  createdAt.setDate(createdAt.getDate() - 5);
+  
+  // Clean up category (remove any extra spaces)
+  const cleanCategory = product.category.trim();
   
   return {
     id: product.id,
@@ -20,34 +24,101 @@ const convertStaticProduct = (product: StaticProduct): SellerProduct => {
     name: product.name,
     description: product.description,
     price: product.price,
-    category: product.category,
+    category: cleanCategory,
     images: [product.image],
     materials: product.materials,
     artisan: product.artisan,
     createdAt: createdAt.toISOString(),
     isTrending,
-    mobile: product.mobile,
+    mobile: product.mobile || "",
     inStock: true,
   };
 };
 
 // Get all products (both static and seller-added)
 export const getAllProducts = (): SellerProduct[] => {
+  console.log("Getting all products...");
+  
+  // Get seller products from localStorage
   const sellerProductsJson = localStorage.getItem("sellerProducts");
   const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
+  console.log("Seller products from localStorage:", sellerProducts);
 
+  // Get products directly from sellers
+  const sellers = getSellers();
+  const sellerProductsFromSellers: SellerProduct[] = [];
+  
+  sellers.forEach(seller => {
+    if (seller.products && seller.products.length > 0) {
+      sellerProductsFromSellers.push(...seller.products);
+    }
+  });
+  
+  console.log("Products from sellers:", sellerProductsFromSellers);
+
+  // Convert static products
   const convertedStaticProducts = products.map(convertStaticProduct);
-  return [...convertedStaticProducts, ...sellerProducts];
+  console.log("Converted static products:", convertedStaticProducts);
+
+  // Create a map to track unique products by ID
+  const uniqueProductsMap = new Map<string, SellerProduct>();
+
+  // Helper function to check if ID is numeric
+  const isNumericId = (id: string) => /^\d+$/.test(id);
+
+  // First, add all seller products from localStorage (they take precedence)
+  sellerProducts.forEach(product => {
+    if (isNumericId(product.id)) {
+      uniqueProductsMap.set(product.id, product);
+    }
+  });
+
+  // Then add products from sellers
+  sellerProductsFromSellers.forEach(product => {
+    if (isNumericId(product.id) && !uniqueProductsMap.has(product.id)) {
+      uniqueProductsMap.set(product.id, product);
+    }
+  });
+
+  // Finally add static products only if they don't exist
+  convertedStaticProducts.forEach(product => {
+    if (isNumericId(product.id) && !uniqueProductsMap.has(product.id)) {
+      uniqueProductsMap.set(product.id, product);
+    }
+  });
+
+  // Convert map back to array
+  const allProducts = Array.from(uniqueProductsMap.values());
+  console.log("All products after deduplication and numeric ID filtering:", allProducts);
+  
+  return allProducts;
 };
 
 // ✅ FIXED: Support category as array (like ["Accessories"])
 export const getProductsByCategory = (category: string): SellerProduct[] => {
-  return getAllProducts().filter((product) => {
+  console.log(`Getting products for category: ${category}`);
+  
+  // Get all products
+  const allProducts = getAllProducts();
+  console.log(`Total products available: ${allProducts.length}`);
+  
+  // Filter products by category
+  const filteredProducts = allProducts.filter((product) => {
+    // Handle case where category is an array
     if (Array.isArray(product.category)) {
-      return product.category.includes(category);
+      const includes = product.category.includes(category);
+      console.log(`Product ${product.name} has categories ${product.category.join(', ')}, includes ${category}: ${includes}`);
+      return includes;
     }
-    return product.category === category;
+    
+    // Handle case where category is a string
+    const matches = product.category === category;
+    console.log(`Product ${product.name} has category ${product.category}, matches ${category}: ${matches}`);
+    return matches;
   });
+  
+  console.log(`Found ${filteredProducts.length} products for category ${category}`);
+  return filteredProducts;
 };
 
 export const getProductById = (id: string): SellerProduct | undefined => {
@@ -70,38 +141,90 @@ export const getProductById = (id: string): SellerProduct | undefined => {
 };
 
 export const getNewArrivals = (): SellerProduct[] => {
+  console.log("Getting new arrivals...");
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  console.log("Seven days ago:", sevenDaysAgo);
 
-  // Get only seller products from localStorage
-  const sellerProductsJson = localStorage.getItem("sellerProducts");
-  const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
-
+  // Get all products (both static and seller-added)
+  const allProducts = getAllProducts();
+  console.log("All products:", allProducts);
+  
   // Filter only products created in the last 7 days
-  return sellerProducts.filter(
-    (product) => new Date(product.createdAt) >= sevenDaysAgo
+  const newArrivals = allProducts.filter(
+    (product) => {
+      if (!product.createdAt) {
+        console.log("Product missing createdAt:", product);
+        return false;
+      }
+      const productDate = new Date(product.createdAt);
+      const isNewArrival = productDate >= sevenDaysAgo;
+      console.log(`Product ${product.name} created at ${productDate}, is new arrival: ${isNewArrival}`);
+      return isNewArrival;
+    }
   );
+
+  console.log("Filtered new arrivals:", newArrivals);
+  return newArrivals;
 };
 
 export const getTrendingProducts = (): SellerProduct[] => {
-  return getAllProducts().filter((product) => product.isTrending);
+  // Get all products
+  const allProducts = getAllProducts();
+  
+  // First, get products with isTrending flag
+  const trendingFlaggedProducts = allProducts.filter((product) => product.isTrending);
+  
+  // If we have enough trending products, return them
+  if (trendingFlaggedProducts.length >= 4) {
+    return trendingFlaggedProducts.slice(0, 4);
+  }
+  
+  // Otherwise, add some popular products to fill the gap
+  const popularProducts = allProducts
+    .filter(product => !product.isTrending)
+    .sort((a, b) => {
+      // Sort by price (higher price = more popular)
+      return b.price - a.price;
+    })
+    .slice(0, 4 - trendingFlaggedProducts.length);
+  
+  return [...trendingFlaggedProducts, ...popularProducts];
 };
 
 export const addProduct = (
   product: Omit<SellerProduct, "id" | "createdAt">
 ): SellerProduct => {
+  console.log("Adding new product:", product);
+  
   const newProduct: SellerProduct = {
     ...product,
     id: Date.now().toString(),
-    createdAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(), // Ensure createdAt is set
+    // Mark as new arrival by default
+    isNewArrival: true,
+    // Randomly mark some products as trending (about 20% chance)
+    isTrending: Math.random() < 0.2,
   };
+
+  console.log("Created new product with dates:", newProduct);
 
   // Add to sellerProducts in localStorage
   const sellerProductsJson = localStorage.getItem("sellerProducts");
   const sellerProducts: SellerProduct[] = sellerProductsJson ? JSON.parse(sellerProductsJson) : [];
 
-  sellerProducts.push(newProduct);
+  // Check if product with same ID already exists
+  const existingIndex = sellerProducts.findIndex(p => p.id === newProduct.id);
+  if (existingIndex !== -1) {
+    // Update existing product
+    sellerProducts[existingIndex] = newProduct;
+  } else {
+    // Add new product
+    sellerProducts.push(newProduct);
+  }
+  
   localStorage.setItem("sellerProducts", JSON.stringify(sellerProducts));
+  console.log("Updated sellerProducts in localStorage:", sellerProducts);
 
   // Also add to the seller's products array
   if (product.sellerId && product.sellerId !== "static") {
@@ -111,9 +234,23 @@ export const addProduct = (
       const sellerIndex = sellers.findIndex((s: any) => s.id === product.sellerId);
       
       if (sellerIndex !== -1) {
-        // Add the product to the seller's products array
-        sellers[sellerIndex].products.push(newProduct);
+        // Check if product already exists in seller's products
+        const existingProductIndex = sellers[sellerIndex].products.findIndex(
+          (p: any) => p.id === newProduct.id
+        );
+        
+        if (existingProductIndex !== -1) {
+          // Update existing product
+          sellers[sellerIndex].products[existingProductIndex] = newProduct;
+        } else {
+          // Add new product
+          sellers[sellerIndex].products.push(newProduct);
+        }
+        
         localStorage.setItem("sellers", JSON.stringify(sellers));
+        console.log("Added/updated product in seller's products:", sellers[sellerIndex].products);
+      } else {
+        console.error(`Seller with ID ${product.sellerId} not found`);
       }
     }
   }
