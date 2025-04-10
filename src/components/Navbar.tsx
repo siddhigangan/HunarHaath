@@ -135,7 +135,7 @@ export function Navbar() {
                   </Button>
                 </Link>
                 <Link to="/seller-login">
-                  <Button variant="ghost" className="text-craft-terracotta text-sm">Seller Login</Button>
+                  <Button variant="ghost" className="text-craft-terracotta text-sm hidden sm:inline-flex">Seller Login</Button>
                 </Link>
               </>
             )}
@@ -148,17 +148,114 @@ export function Navbar() {
           </div>
         </div>
 
-        {isMobile && (
-          <div className="p-2">
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="Search crafts..."
-                value={searchQuery}
-                onChange={handleSearch}
-                className="w-full pr-8 border-craft-earth/30 focus-visible:ring-craft-terracotta/50"
-              />
-              <Search className="absolute right-2 top-2.5 h-4 w-4 text-craft-forest/70" />
+        {/* Mobile Menu */}
+        {isMobile && isOpen && (
+          <div className="fixed inset-0 bg-white z-40 pt-16 pb-6 overflow-y-auto">
+            <div className="container mx-auto px-4">
+              {/* Mobile Search */}
+              <div className="mb-6">
+                <div className="relative">
+                  <Input
+                    type="text"
+                    placeholder="Search crafts..."
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    className="w-full pr-8 border-craft-earth/30 focus-visible:ring-craft-terracotta/50"
+                  />
+                  <Search className="absolute right-2 top-2.5 h-4 w-4 text-craft-forest/70" />
+                </div>
+                {searchResults.length > 0 && (
+                  <div className="mt-2 bg-white border shadow-md rounded-md">
+                    <div className="p-2 border-b flex justify-end">
+                      <button onClick={() => setSearchResults([])} className="text-sm text-red-500 hover:underline">
+                        Close
+                      </button>
+                    </div>
+                    {searchResults.map((product: any) => (
+                      <Link
+                        key={product.id}
+                        to={`/product/${product.id}`}
+                        className="block px-4 py-2 hover:bg-gray-100 text-sm text-craft-forest"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {product.name} by {product.artisan}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              {/* Mobile Navigation */}
+              <nav className="flex flex-col space-y-4 mb-6">
+                {categories.map((category) => (
+                  <Link
+                    key={category.name}
+                    to={category.path}
+                    className="text-craft-forest hover:text-craft-terracotta transition py-2 border-b border-gray-100"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+                <Link 
+                  to="/all-products" 
+                  className="text-craft-forest hover:text-craft-terracotta transition py-2 border-b border-gray-100"
+                  onClick={() => setIsOpen(false)}
+                >
+                  All Products
+                </Link>
+                <Link 
+                  to="/sellers" 
+                  className="text-craft-forest hover:text-craft-terracotta transition py-2 border-b border-gray-100"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sellers
+                </Link>
+              </nav>
+              
+              {/* Mobile User Actions */}
+              <div className="flex flex-col space-y-4">
+                {isSeller ? (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start" 
+                      onClick={() => {
+                        navigate("/seller-dashboard");
+                        setIsOpen(false);
+                      }}
+                    >
+                      <User className="h-5 w-5 mr-2 text-craft-terracotta" />
+                      Seller Dashboard
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start text-red-500" 
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false);
+                      }}
+                    >
+                      <LogOut className="h-5 w-5 mr-2" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="w-full" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start">
+                        <User className="h-5 w-5 mr-2 text-craft-forest" />
+                        Login
+                      </Button>
+                    </Link>
+                    <Link to="/seller-login" className="w-full" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start text-craft-terracotta">
+                        Seller Login
+                      </Button>
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         )}
