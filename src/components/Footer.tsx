@@ -1,7 +1,44 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 export function Footer() {
+  useEffect(() => {
+    const addTranslateScript = () => {
+      const script = document.createElement("script");
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      script.id = "google-translate-script";
+      document.body.appendChild(script);
+    };
+
+    // Google Translate initialization function
+    window.googleTranslateElementInit = () => {
+      if (window.google?.translate) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,hi,mr",
+            layout: window.google.translate.InlineLayout.SIMPLE, // Using InlineLayout.SIMPLE
+          },
+          "google_translate_element"
+        );
+      }
+    };
+
+    // Ensure the script is added only once
+    if (!document.getElementById("google-translate-script")) {
+      addTranslateScript();
+    } else if (window.google?.translate) {
+      window.googleTranslateElementInit();
+    }
+
+    return () => {
+      // Cleanup function to reset googleTranslateElementInit when the component is unmounted
+      window.googleTranslateElementInit = () => {};
+    };
+  }, []);
+
   return (
     <footer className="bg-craft-forest text-white pt-12 pb-8">
       <div className="container mx-auto px-4">
@@ -47,7 +84,10 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        
+
+        {/* Google Translate Widget */}
+        <div id="google_translate_element" className=" md:block ml-2" />
+
         <div className="border-t border-craft-cream/20 mt-8 pt-8 text-center text-craft-cream/60">
           <p>&copy; {new Date().getFullYear()} HunarHaath. All rights reserved.</p>
         </div>

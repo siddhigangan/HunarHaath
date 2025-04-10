@@ -7,19 +7,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useCart } from "@/context/CartContext";
 import { getAllProducts } from '@/data/sharedProducts';
 
-declare global {
-  interface Window {
-    googleTranslateElementInit: () => void;
-    google: any;
-  }
-}
-
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSeller, setIsSeller] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [isTranslateReady, setIsTranslateReady] = useState(false);
 
   const isMobile = useIsMobile();
   const { totalItems } = useCart();
@@ -30,66 +22,6 @@ export function Navbar() {
     const isSellerLoggedIn = localStorage.getItem("isSeller");
     setIsSeller(!!(sellerId && isSellerLoggedIn));
   }, []);
-
-  useEffect(() => {
-    const addTranslateScript = () => {
-      const script = document.createElement("script");
-      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-      script.async = true;
-      script.id = "google-translate-script";
-      document.body.appendChild(script);
-    };
-
-    window.googleTranslateElementInit = () => {
-      if (window.google?.translate) {
-        new window.google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages: "en,hi,mr",
-            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          },
-          "google_translate_element"
-        );
-        setIsTranslateReady(true);
-      }
-    };
-
-    if (!document.getElementById("google-translate-script")) {
-      addTranslateScript();
-    } else if (window.google?.translate) {
-      window.googleTranslateElementInit();
-    }
-
-    return () => {
-      window.googleTranslateElementInit = () => {};
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isTranslateReady) return;
-
-    const style = document.createElement("style");
-    style.innerHTML = `
-      .goog-te-combo {
-        padding: 6px 12px !important;
-        border-radius: 8px !important;
-        border: 1px solid #d1d5db !important;
-        background-color: #f9fafb !important;
-        font-size: 14px !important;
-        color: #1f2937 !important;
-        font-family: inherit !important;
-      }
-      .goog-te-banner-frame { display: none !important; }
-      .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-      .goog-text-highlight { background-color: transparent !important; }
-      body { top: 0 !important; }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, [isTranslateReady]);
 
   const handleLogout = () => {
     localStorage.removeItem("sellerId");
@@ -207,9 +139,6 @@ export function Navbar() {
               </>
             )}
 
-            {/* Translate Widget */}
-            <div id="google_translate_element" className="hidden md:block ml-2" />
-
             {isMobile && (
               <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -233,60 +162,6 @@ export function Navbar() {
           </div>
         )}
       </div>
-
-      {isMobile && isOpen && (
-        <nav className="bg-white border-t border-gray-200">
-          <ul className="p-4 space-y-2">
-            {categories.map((category) => (
-              <li key={category.name}>
-                <Link
-                  to={category.path}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-craft-forest hover:text-craft-terracotta"
-                >
-                  {category.name}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link to="/all-products" className="block text-craft-terracotta" onClick={() => setIsOpen(false)}>
-                View All Products
-              </Link>
-            </li>
-            <li>
-              <Link to="/sellers" className="block text-craft-terracotta" onClick={() => setIsOpen(false)}>
-                Sellers
-              </Link>
-            </li>
-            {isSeller ? (
-              <>
-                <li>
-                  <Link to="/seller-dashboard" onClick={() => setIsOpen(false)} className="block text-craft-terracotta">
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsOpen(false);
-                    }}
-                    className="w-full text-left text-craft-terracotta"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              <li>
-                <Link to="/seller-login" className="block text-craft-terracotta" onClick={() => setIsOpen(false)}>
-                  Seller Login
-                </Link>
-              </li>
-            )}
-          </ul>
-        </nav>
-      )}
     </header>
   );
 }

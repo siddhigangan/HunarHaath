@@ -7,11 +7,12 @@ const convertStaticProduct = (product: StaticProduct): SellerProduct => {
   const sellers = getSellers();
   const seller = sellers.find(s => s.name === product.artisan);
   
-  // Mark products with IDs 1-8 as trending (increased from 4 to 8)
-  const isTrending = parseInt(product.id) <= 8;
+  // Mark specific products as trending based on their IDs
+  // You can modify this array to change which products are trending
+  const trendingProductIds = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  const isTrending = trendingProductIds.includes(product.id);
   
-  // Set createdAt to a date 5 days ago for static products (changed from 10 to 5)
-  // This ensures they appear in New Arrivals
+  // Set createdAt to a date 5 days ago for static products
   const createdAt = new Date();
   createdAt.setDate(createdAt.getDate() - 5);
   
@@ -172,24 +173,15 @@ export const getTrendingProducts = (): SellerProduct[] => {
   // Get all products
   const allProducts = getAllProducts();
   
-  // First, get products with isTrending flag
-  const trendingFlaggedProducts = allProducts.filter((product) => product.isTrending);
+  // Sort all products by creation date (newest first)
+  const sortedByDate = [...allProducts].sort((a, b) => {
+    const dateA = new Date(a.createdAt).getTime();
+    const dateB = new Date(b.createdAt).getTime();
+    return dateB - dateA;
+  });
   
-  // If we have enough trending products, return them
-  if (trendingFlaggedProducts.length >= 4) {
-    return trendingFlaggedProducts.slice(0, 4);
-  }
-  
-  // Otherwise, add some popular products to fill the gap
-  const popularProducts = allProducts
-    .filter(product => !product.isTrending)
-    .sort((a, b) => {
-      // Sort by price (higher price = more popular)
-      return b.price - a.price;
-    })
-    .slice(0, 4 - trendingFlaggedProducts.length);
-  
-  return [...trendingFlaggedProducts, ...popularProducts];
+  // Return the 4 newest products
+  return sortedByDate.slice(0, 4);
 };
 
 export const addProduct = (
