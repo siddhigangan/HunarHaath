@@ -149,12 +149,12 @@ export const initializeSampleSellers = () => {
       password: "password123"
     },
     {
-      name: "Veena Soni",
+      name: "Meena Soni",
       contact: "9423700979",
       mobile: "9423700979",
-      email: "veenasoni@gmail.com",
+      email: "meenasoni@gmail.com",
       categories: ["Clothing", "Accessories"],
-      photo: "/veena.jpg",
+      photo: "/meena.jpg",
       address: "Amravati, Maharashtra",
       shopAddress: "Mahesh nagar, Amravati, Maharashtra",
       password: "password123"
@@ -262,7 +262,7 @@ const initializeSampleProducts = () => {
   
   // Find sellers by name
   const pravin = sellers.find(s => s.name === "Pravin Kalbande");
-  const veena = sellers.find(s => s.name === "Veena Soni");
+  const meena = sellers.find(s => s.name === "Meena Soni");
   const lalita = sellers.find(s => s.name === "Lalita Nahar");
   const salmaan = sellers.find(s => s.name === "Salmaan Sheikh");
   const deepak = sellers.find(s => s.name === "Deepak Singh");
@@ -305,17 +305,17 @@ const initializeSampleProducts = () => {
     });
   }
   
-  // Add products for Veena
-  if (veena && !productExists(veena, "God's cloth Ghagra")) {
-    addProductToSeller(veena.id, {
+  // Add products for Meena
+  if (meena && !productExists(meena, "God's cloth Ghagra")) {
+    addProductToSeller(meena.id, {
       name: "God's cloth Ghagra",
       description: "This vibrant handcrafted traditional dress features intricate mirror work and a rich magenta base, accented with blue and gold borders. Perfect for festive occasions or cultural celebrations.",
       price: 250,
       category: "Clothing",
       image: "/cloth1.jpg",
       materials: ["Cotton Blend", "Mirror Embellishments", "Decorative Threadwork"],
-      artisan: "Veena Soni",
-      mobile: veena.mobile,
+      artisan: "Meena Soni",
+      mobile: meena.mobile,
       inStock: true
     });
   }
