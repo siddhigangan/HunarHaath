@@ -36,6 +36,7 @@ export default function ProductDetails() {
   const handleAddToCart = () => {
     if (!product) return;
 
+
     // Convert SellerProduct to Product
     const cartProduct: Product = {
       id: product.id,

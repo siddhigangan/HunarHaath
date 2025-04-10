@@ -14,6 +14,7 @@ export default function Home() {
       <NewArrivals />
       <Testimonials />
       <ArtisanCTA />
+      <div id="google_translate_element"></div>
     </>
   );
 } 
