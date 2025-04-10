@@ -198,7 +198,7 @@ export const initializeSampleSellers = () => {
       mobile: "9822215764",
       email: "sunita_07@gmail.com",
       categories: ["Food", "Spices"],
-      photo: "/Artisian.jpg",
+      photo: "/sunita.jpg",
       address: "Hinganghat, Maharashtra",
       shopAddress: "Karanja chowk, Hinganghat, Maharashtra",
       password: "password123"
