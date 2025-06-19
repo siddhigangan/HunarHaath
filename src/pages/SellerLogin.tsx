@@ -1,26 +1,83 @@
 import { useState } from "react";
-import { getSellerByEmail } from "@/data/sellers";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SellerLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError(null);
+    setIsLoading(true);
 
-    // For demo purposes, check against Sandeep Lad's credentials
-    if (email === "seller@gmail.com" && password === "password123") {
-      // Store seller ID in localStorage
-      localStorage.setItem("sellerId", "sandeep-lad-id");
-      localStorage.setItem("isSeller", "true");
-      // Redirect to seller dashboard
+    try {
+      console.log('Attempting to connect to backend...');
+      
+      console.log('Login fetch URL:', 'http://localhost:5000/api/seller/login');
+      const response = await fetch('http://localhost:5000/api/seller/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).catch(error => {
+        console.error('Network error:', error);
+        throw new Error('Unable to connect to the server. Please make sure the server is running.');
+      });
+
+      if (!response) {
+        throw new Error('No response from server');
+      }
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned non-JSON response. Please try again.');
+      }
+
+      const data = await response.json();
+      console.log('Server response:', { ...data, data: { ...data.data, password: '[REDACTED]' } });
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Store seller authentication data
+      localStorage.setItem('sellerId', data.data._id);
+      localStorage.setItem('isSeller', 'true');
+
+      toast({
+        title: "Login Successful",
+        description: "Welcome back to CraftConnect!",
+      });
+
       navigate("/seller-dashboard");
-    } else {
-      setError("Invalid email or password");
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err instanceof Error ? err.message : "Login failed. Please try again.");
+      toast({
+        title: "Login Failed",
+        description: err instanceof Error ? err.message : "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -39,44 +96,37 @@ export default function SellerLogin() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-craft-terracotta"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>
 
-          <button
+          <Button
             type="submit"
             className="w-full bg-craft-terracotta text-white py-2 px-4 rounded hover:bg-craft-terracotta/90"
+            disabled={isLoading}
           >
-            Login
-          </button>
+            {isLoading ? "Logging in..." : "Login as Seller"}
+          </Button>
         </form>
-
-        <div className="mt-6 text-center text-sm text-gray-600">
-          <p>Demo Credentials:</p>
-          <p>Email: seller@gmail.com</p>
-          <p>Password: password123</p>
-        </div>
       </div>
     </div>
   );

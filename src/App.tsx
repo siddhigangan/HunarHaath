@@ -25,6 +25,7 @@ import SellerProfile from "@/pages/SellerProfile";
 import Sellers from "./pages/Sellers";
 import CustomizeProduct from "./pages/CustomizeProduct";
 import AllProducts from "./pages/AllProducts";
+import AdminSellers from "./pages/AdminSellers";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ export function App() {
                 <Route path="/sellers" element={<Sellers />} />
                 <Route path="/customize-product" element={<CustomizeProduct />} />
                 <Route path="/all-products" element={<AllProducts />} />
+                <Route path="/admin/sellers" element={<AdminSellers />} />
               </Route>
             </Routes>
           </Router>

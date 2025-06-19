@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getProductsByCategory, Product } from "@/data/sharedProducts";
+import { getProductsByCategory } from "@/data/sharedProducts";
+import { Product } from "@/data/sellers";
 
 export default function HomeDecorCategory() {
   const [products, setProducts] = useState<Product[]>([]);
