@@ -19,7 +19,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:8080','http://localhost:8081', 'http://localhost:8082'],
+  origin: ['http://localhost:8080','http://localhost:8081', 'http://localhost:8082','https://hunar-haath.vercel.app'],
   credentials: true
 }));
 app.use(express.json({ limit: '50mb' }));
